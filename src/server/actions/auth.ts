@@ -40,7 +40,9 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   } catch (err) {
     // The full error is in the server logs (terminal locally, Vercel > Logs in production).
     console.error("[login] rate limit query failed", err);
-    const detail = err instanceof Error ? err.message.slice(0, 140) : "unknown error";
+    // Drizzle wraps the driver's error; the useful message is on `cause`.
+    const root = err instanceof Error && err.cause instanceof Error ? err.cause : err;
+    const detail = root instanceof Error ? root.message.slice(0, 160) : "unknown error";
     return {
       error: `Can't reach the database (${detail}). Check DATABASE_URL, then restart or redeploy.`,
       email,
