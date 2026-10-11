@@ -203,6 +203,7 @@ export const projects: Project[] = [
         "The pitch, the primary call to action and a live product preview.",
       ),
     ],
+    logo: "/logos/formtified-mark.png",
   },
 ];
 

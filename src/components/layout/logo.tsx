@@ -12,8 +12,10 @@ export function Logo({ className, onClick }: { className?: string; onClick?: () 
       className={cn("group flex items-center gap-2.5", className)}
     >
       <LogoMark className="size-9 text-accent-ink transition-transform duration-500 ease-out-expo group-hover:scale-105" />
-      <span className="font-display text-[1.05rem] leading-none font-bold tracking-tight">
-        Jonas<span className="hidden text-muted sm:inline"> Chukwuemeka</span>
+      {/* Thin, spaced capitals to match the monoline JC in the mark. */}
+      <span className="flex flex-col gap-1 text-[0.8rem] leading-none font-light tracking-[0.16em] uppercase">
+        <span className="text-fg">Jonas</span>
+        <span className="text-muted">Chukwuemeka</span>
       </span>
     </Link>
   );
