@@ -7,7 +7,13 @@ import { redirect } from "next/navigation";
 import { optionalEnv } from "../env";
 import { ipHash } from "../privacy";
 import { rateLimit } from "../rate-limit";
-import { createSessionToken, IGNORE_COOKIE, SESSION_COOKIE, SESSION_DAYS } from "../session";
+import {
+  adminPasswordHash,
+  createSessionToken,
+  IGNORE_COOKIE,
+  SESSION_COOKIE,
+  SESSION_DAYS,
+} from "../session";
 
 /** `email` is sent back so the form can keep it after a failed attempt. */
 export type LoginState = { error?: string; email?: string };
@@ -19,11 +25,19 @@ const getDummyHash = async () => (dummyHash ??= await bcrypt.hash("not-the-admin
 const digest = (s: string) => createHash("sha256").update(s).digest();
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
-  const adminEmail = optionalEnv("ADMIN_EMAIL")?.toLowerCase();
-  const adminHash = optionalEnv("ADMIN_PASSWORD_HASH");
+  const adminEmail = optionalEnv("ADMIN_EMAIL")
+    ?.replace(/^["']|["']$/g, "")
+    .toLowerCase();
+  const adminHash = adminPasswordHash();
   if (!adminEmail || !adminHash || !optionalEnv("SESSION_SECRET")) {
     return {
       error: "Admin login isn't set up yet. Add ADMIN_EMAIL, ADMIN_PASSWORD_HASH and SESSION_SECRET.",
+    };
+  }
+  if (!/^\$2[aby]\$\d\d\$[./A-Za-z0-9]{53}$/.test(adminHash)) {
+    return {
+      error:
+        "ADMIN_PASSWORD_HASH on this server isn't a valid hash. Paste the output of npm run hash-password again.",
     };
   }
 

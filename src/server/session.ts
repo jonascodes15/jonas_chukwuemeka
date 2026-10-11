@@ -19,9 +19,20 @@ const secret = () => {
   return new TextEncoder().encode(s);
 };
 
+/**
+ * ADMIN_PASSWORD_HASH as a plain bcrypt hash. In .env.local each $ must be written as \$, and
+ * people often paste that escaped form into Vercel too, where it stays literal. A bcrypt hash
+ * never contains a backslash or quotes, so stripping them accepts both forms safely.
+ */
+export function adminPasswordHash(): string | undefined {
+  const raw = process.env.ADMIN_PASSWORD_HASH?.trim();
+  if (!raw) return undefined;
+  return raw.replace(/^["']|["']$/g, "").replace(/\\\$/g, "$");
+}
+
 const fingerprint = () =>
   createHash("sha256")
-    .update(`${process.env.ADMIN_EMAIL?.trim().toLowerCase()}|${process.env.ADMIN_PASSWORD_HASH?.trim()}`)
+    .update(`${process.env.ADMIN_EMAIL?.trim().toLowerCase()}|${adminPasswordHash()}`)
     .digest("base64url")
     .slice(0, 16);
 
