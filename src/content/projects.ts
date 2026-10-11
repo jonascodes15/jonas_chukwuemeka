@@ -244,6 +244,18 @@ export const stores: Store[] = [
       background: "#eae6de",
     },
   },
+  {
+    name: "Fashion Spice by Judie",
+    description: "Tailored fashion, custom hair bonnets, tote bags and handcrafted resin art.",
+    href: "https://fashionspicebyjudie.weblanda.shop",
+    logo: {
+      src: "/logos/stores/fashionspicebyjudie",
+      width: 819,
+      height: 498,
+      widths: [400, 560],
+      background: "#000000",
+    },
+  },
 ];
 
 export function getProject(slug: string) {

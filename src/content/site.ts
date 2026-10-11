@@ -56,8 +56,6 @@ export const site = {
       "My background is in biology. I hold a degree from FUTO Owerri and I'm a co-author on a peer-reviewed research publication. That training shapes how I build: clean data, careful testing, and understanding how things actually work before I call them done.",
       "I'm growing my skills in data engineering, with a strong interest in biological and health data. I use AI tools to build faster, and I make sure I understand every part of what I ship.",
     ],
-    beyondCode:
-      "Beyond code: I served as Students' Union Director of Welfare at FUTO, where I partnered with the Rotaract Club to bring free HIV screening to campus.",
   },
 
   contact: {

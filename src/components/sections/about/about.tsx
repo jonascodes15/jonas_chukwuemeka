@@ -1,4 +1,4 @@
-import { ArrowUpRight, BookOpen, HeartHandshake } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import Image from "next/image";
 import { Counter } from "@/components/motion/counter";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
@@ -47,13 +47,6 @@ export function About() {
                 </Reveal>
               ))}
             </div>
-
-            <Reveal className="mt-8 flex gap-4 rounded-card border border-border bg-surface p-5 sm:p-6">
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-accent-contrast">
-                <HeartHandshake aria-hidden className="size-5" />
-              </span>
-              <p className="leading-relaxed text-fg">{site.about.beyondCode}</p>
-            </Reveal>
 
             <RevealGroup as="div" className="mt-10">
               <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-4">
