@@ -45,7 +45,6 @@ export const site = {
     subline: "Founder of Weblanda. Biologist in tech.",
     supporting:
       "I build end to end, from the first product decision to the database, the checkout and the payment that lands in your account. My training as a biologist shapes how I work with data: measured carefully, tested properly and understood before it ships.",
-    status: "Currently: building Weblanda",
     primaryCta: { label: "See my work", target: "work" },
     secondaryCta: { label: "Get in touch", target: "contact" },
   },

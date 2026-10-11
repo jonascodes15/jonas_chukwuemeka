@@ -44,7 +44,7 @@ async function Settings() {
               <span>
                 <span className="block font-medium text-fg">Available for work</span>
                 <span className="mt-0.5 block text-sm text-muted">
-                  Shows a badge next to the status line on the homepage.
+                  Shows the label above the headline on the homepage. Off hides it.
                 </span>
               </span>
               <input

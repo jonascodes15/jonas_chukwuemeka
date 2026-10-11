@@ -2,6 +2,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getProject, stores } from "@/content/projects";
 import type { Screenshot } from "@/content/types";
+import { PinnedRail } from "./pinned-rail";
 import { ProjectFeature } from "./project-feature";
 import { ScreenRail } from "./screen-rail";
 import { StoreCards } from "./store-cards";
@@ -46,7 +47,7 @@ export function Work() {
             demoNote="Shown with a demo shop"
           />
 
-          <div className="rounded-card border border-border bg-surface/50 p-6 sm:p-10">
+          <PinnedRail className="rounded-card border border-border bg-surface/50 p-6 sm:p-10">
             <Reveal className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <h3 className="font-display text-2xl font-bold tracking-tight text-fg sm:text-3xl">
                 Everything a seller needs, <span className="text-ghost">from a phone.</span>
@@ -56,7 +57,7 @@ export function Work() {
               </p>
             </Reveal>
             <ScreenRail shots={sellerScreens} label="Weblanda seller dashboard screens" />
-          </div>
+          </PinnedRail>
 
           <div className="rounded-card border border-border bg-surface/50 p-6 sm:p-10">
             <Reveal className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">

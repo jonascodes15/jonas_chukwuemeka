@@ -15,13 +15,7 @@ export function Hero() {
 
       <div className="container-page grid items-center gap-14 pt-10 pb-20 sm:pt-14 lg:min-h-[calc(100dvh-4.5rem)] lg:grid-cols-[1.25fr_0.75fr] lg:gap-10 lg:py-16">
         <div>
-          <Reveal y={12} className="mb-7 flex flex-wrap items-center gap-2">
-            <p className="inline-flex items-center gap-2.5 rounded-pill border border-border bg-surface/70 py-1.5 pr-4 pl-3 text-sm text-muted backdrop-blur">
-              <span aria-hidden className="size-2 animate-pulse-dot rounded-full bg-accent" />
-              {site.hero.status}
-            </p>
-            <AvailabilityBadge />
-          </Reveal>
+          <AvailabilityBadge />
 
           <h1 id="hero-title" className="font-display text-hero font-extrabold text-fg">
             <span className="sr-only">{site.name}. </span>
@@ -105,13 +99,19 @@ function HeroBackground() {
   );
 }
 
-/** Set from /admin/settings. Cached with the page and refreshed when the setting is saved. */
+/**
+ * Set from /admin/settings; hidden when availability is switched off.
+ * Cached with the page and refreshed when the setting is saved.
+ */
 async function AvailabilityBadge() {
   const { availableForWork, availabilityLabel } = await getSettings();
   if (!availableForWork) return null;
   return (
-    <p className="inline-flex items-center rounded-pill bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-contrast">
-      {availabilityLabel}
-    </p>
+    <Reveal y={12} className="mb-7">
+      <p className="inline-flex items-center gap-2.5 rounded-pill border border-border bg-surface/70 py-1.5 pr-4 pl-3 text-sm text-muted backdrop-blur">
+        <span aria-hidden className="size-2 animate-pulse-dot rounded-full bg-accent" />
+        {availabilityLabel}
+      </p>
+    </Reveal>
   );
 }
