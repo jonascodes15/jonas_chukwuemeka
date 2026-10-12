@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   authors: [{ name: site.fullName, url: site.url }],
   creator: site.fullName,
   alternates: { canonical: "/" },
+  // The HTML tag code from Google Search Console (the content="..." value only).
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
   openGraph: {
     type: "website",
     locale: "en_NG",
