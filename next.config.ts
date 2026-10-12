@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["react-icons"],
+    // Room for a CV upload from the dashboard (capped at 4 MB in src/server/cv.ts).
+    serverActions: { bodySizeLimit: "4.5mb" },
   },
   images: {
     formats: ["image/avif", "image/webp"],

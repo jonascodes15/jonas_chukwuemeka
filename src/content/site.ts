@@ -24,9 +24,10 @@ export const site = {
     greeting: "Hi Jay, I found you through your website and I'd like to talk.",
   },
 
-  // TODO: the CV PDF still lists the old X handle (x.com/jonas_codes). Replace this file once the CV is updated.
+  // /cv serves the CV uploaded in the dashboard (/admin/cv), or public/cv/Jonas-Chukwuemeka-CV.pdf
+  // when none is uploaded. TODO: that bundled PDF still lists the old X handle (x.com/jonas_codes).
   cv: {
-    href: "/cv/Jonas-Chukwuemeka-CV.pdf",
+    href: "/cv",
     fileName: "Jonas-Chukwuemeka-CV.pdf",
   },
 

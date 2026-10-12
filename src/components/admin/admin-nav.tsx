@@ -3,6 +3,7 @@
 import {
   BarChart3,
   CalendarDays,
+  FileText,
   Inbox,
   LayoutDashboard,
   Mail,
@@ -23,6 +24,7 @@ const items = [
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/admin/chats", label: "Chat logs", icon: MessageCircleQuestion },
   { href: "/admin/bookings", label: "Bookings", icon: CalendarDays },
+  { href: "/admin/cv", label: "CV", icon: FileText },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 

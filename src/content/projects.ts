@@ -156,7 +156,7 @@ export const projects: Project[] = [
       "Vercel",
     ],
     links: [
-      { label: "Live app", href: "https://formtified.vercel.app", kind: "live" },
+      { label: "Live app", href: "https://www.formtified.com", kind: "live" },
       { label: "How it's built", href: "https://github.com/jonascodes15/formtified", kind: "github" },
       { label: "Formtified on X", href: "https://x.com/Formtified", kind: "x" },
     ],

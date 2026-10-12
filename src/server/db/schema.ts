@@ -103,6 +103,20 @@ export const settings = pgTable("settings", {
     .default(sql`now()`),
 });
 
+/**
+ * Files uploaded from the dashboard, such as the CV (key "cv"). Kept in the database as base64
+ * so there's no extra storage service to set up; uploads are capped at a few MB.
+ */
+export const files = pgTable("files", {
+  key: text("key").primaryKey(),
+  /** The name the file had when it was uploaded, shown in the dashboard. */
+  fileName: text("file_name").notNull(),
+  contentType: text("content_type").notNull(),
+  size: integer("size").notNull(),
+  data: text("data").notNull(),
+  uploadedAt: timestamp("uploaded_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 /** Questions asked in the FAQ chat widget (written from Phase 5). */
 export const chatLogs = pgTable(
   "chat_logs",

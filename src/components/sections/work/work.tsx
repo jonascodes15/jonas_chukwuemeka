@@ -76,7 +76,7 @@ export function Work() {
             label="02 / Product"
             desktop={pick(formtified.screenshots, "generate-done")}
             phone={pick(formtified.screenshots, "mobile-client-form")}
-            url="formtified.vercel.app"
+            url="formtified.com"
             demoNote="Demo data"
             reverse
           />

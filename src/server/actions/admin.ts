@@ -5,6 +5,7 @@ import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireAdmin } from "../auth";
+import { CV_KEY, MAX_CV_BYTES } from "../cv";
 import { getDb, schema } from "../db";
 import { newsletterEmail, sendBatch, sendMail } from "../email";
 import { requireEnv } from "../env";
@@ -112,6 +113,51 @@ export async function sendNewsletter(_prev: NewsletterState, formData: FormData)
     console.error("[newsletter]", err);
     return { status: "error", message: "Sending failed. Check RESEND_API_KEY and RESEND_FROM_EMAIL." };
   }
+}
+
+// --- CV ---------------------------------------------------------------------
+
+export type CvState = { status: "idle" | "success" | "error"; message?: string };
+
+export async function uploadCv(_prev: CvState, formData: FormData): Promise<CvState> {
+  const d = await db();
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) return { status: "error", message: "Choose a PDF first." };
+  if (file.size > MAX_CV_BYTES) return { status: "error", message: "That file is over 4 MB. Export a smaller PDF." };
+
+  const bytes = Buffer.from(await file.arrayBuffer());
+  // Check the content, not just the name: every PDF starts with "%PDF-".
+  if (bytes.subarray(0, 5).toString("latin1") !== "%PDF-") {
+    return { status: "error", message: "That isn't a PDF. Upload your CV as a .pdf file." };
+  }
+
+  const row = {
+    fileName: file.name.replace(/[^\w .()-]/g, "").slice(0, 120) || "CV.pdf",
+    contentType: "application/pdf",
+    size: bytes.length,
+    data: bytes.toString("base64"),
+    uploadedAt: new Date(),
+  };
+  try {
+    await d
+      .insert(schema.files)
+      .values({ key: CV_KEY, ...row })
+      .onConflictDoUpdate({ target: schema.files.key, set: row });
+  } catch (err) {
+    console.error("[cv] upload failed", err);
+    return {
+      status: "error",
+      message: "Couldn't save the file. If this is the first upload, run npm run db:migrate, then try again.",
+    };
+  }
+  refresh();
+  return { status: "success", message: "Uploaded. Every Download CV button now gives this file." };
+}
+
+export async function deleteCv() {
+  const d = await db();
+  await d.delete(schema.files).where(eq(schema.files.key, CV_KEY));
+  refresh();
 }
 
 // --- Settings ---------------------------------------------------------------
