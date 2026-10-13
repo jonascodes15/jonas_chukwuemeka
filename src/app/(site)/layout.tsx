@@ -1,6 +1,7 @@
 import { Tracker } from "@/components/analytics/tracker";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
+import { SectionLinks } from "@/components/layout/section-links";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
@@ -19,6 +20,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <Footer />
       <Tracker />
+      <SectionLinks />
     </>
   );
 }

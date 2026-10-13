@@ -30,7 +30,7 @@ export function Contact() {
     ...(site.calLink
       ? [
           {
-            href: `https://cal.com/${site.calLink}`,
+            href: site.calLink,
             title: "Book a call",
             detail: "Pick a time that suits you",
             icon: CalendarDays,

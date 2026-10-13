@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { Download, Menu, X } from "lucide-react";
+import { CalendarDays, Download, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -80,11 +80,13 @@ export function Nav() {
         >
           <nav
             aria-label="Main"
-            className="container-page flex h-16 items-center justify-between gap-4 md:h-18"
+            className="container-page flex h-16 items-center justify-between gap-2 sm:gap-4 md:h-18"
           >
             <Logo onClick={close} />
 
-            <ul className="hidden items-center gap-1 md:flex">
+            {/* Inline links from lg up; below that the menu button carries them, which leaves
+                room for "Book a call" on tablets too. */}
+            <ul className="hidden items-center gap-1 lg:flex">
               {navLinks.map((link) => {
                 const isActive = active === link.id;
                 return (
@@ -113,13 +115,15 @@ export function Nav() {
               })}
             </ul>
 
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* Smaller on phones so "Book a call" fits; hidden below 360px where it can't. */}
+              <ThemeToggle className="size-8 max-[359px]:hidden sm:size-10" />
               <ButtonAnchor
                 href={site.cv.href}
                 download={site.cv.fileName}
                 size="sm"
-                className="hidden sm:inline-flex"
+                variant={site.calLink ? "secondary" : "primary"}
+                className="hidden lg:inline-flex"
               >
                 <Download
                   aria-hidden
@@ -127,6 +131,18 @@ export function Nav() {
                 />
                 Download CV
               </ButtonAnchor>
+              {site.calLink && (
+                <ButtonAnchor
+                  href={site.calLink}
+                  external
+                  size="sm"
+                  data-track="nav:book-call"
+                  className="h-8 gap-1.5 px-3 text-[0.8rem] sm:h-9 sm:gap-2 sm:px-4 sm:text-sm"
+                >
+                  <CalendarDays aria-hidden className="hidden size-3.5 min-[384px]:block sm:size-4" />
+                  Book a call
+                </ButtonAnchor>
+              )}
               <button
                 ref={menuButtonRef}
                 type="button"
@@ -134,7 +150,7 @@ export function Nav() {
                 aria-expanded={open}
                 aria-controls="mobile-menu"
                 aria-label={open ? "Close menu" : "Open menu"}
-                className="grid size-10 place-items-center rounded-full border border-border text-fg md:hidden"
+                className="grid size-9 place-items-center rounded-full border border-border text-fg sm:size-10 lg:hidden"
               >
                 {open ? <X className="size-5" /> : <Menu className="size-5" />}
               </button>
@@ -188,7 +204,7 @@ function MobileMenu({
       }
     };
     const onResize = () => {
-      if (window.matchMedia("(min-width: 768px)").matches) onClose();
+      if (window.matchMedia("(min-width: 1024px)").matches) onClose();
     };
 
     document.addEventListener("keydown", onKey);
@@ -206,7 +222,7 @@ function MobileMenu({
       {open && (
         <motion.div
           key="mobile-menu"
-          className="fixed inset-0 z-40 md:hidden"
+          className="fixed inset-0 z-40 lg:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { delay: 0.15 } }}

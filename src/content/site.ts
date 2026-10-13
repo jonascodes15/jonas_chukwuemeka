@@ -6,6 +6,13 @@ import type { NavLink } from "./types";
  * Writing rule: no em dashes anywhere in site copy.
  */
 
+/** Accepts a full URL or a cal.com path such as "jonaschukwuemeka/introcall". */
+function calUrl(link: string | undefined) {
+  const value = link?.trim();
+  if (!value) return null;
+  return /^https?:\/\//.test(value) ? value : `https://cal.com/${value.replace(/^\/+/, "")}`;
+}
+
 export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://jonaschukwuemeka.com",
 
@@ -31,7 +38,8 @@ export const site = {
     fileName: "Jonas-Chukwuemeka-CV.pdf",
   },
 
-  calLink: process.env.NEXT_PUBLIC_CAL_LINK ?? null,
+  // Full booking URL, or null when NEXT_PUBLIC_CAL_LINK is unset (the "Book a call" links hide).
+  calLink: calUrl(process.env.NEXT_PUBLIC_CAL_LINK),
 
   seo: {
     title: "Jonas Chukwuemeka | Founder and full-stack developer in Lagos",
