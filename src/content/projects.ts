@@ -1,9 +1,10 @@
+import { caseStudies } from "./caseStudies";
 import type { Project, Screenshot, Store } from "./types";
 
 /**
  * Product work shown in the Work section and on /work/[slug].
  * Screenshots are pre-optimised AVIF/WebP files; see `Screenshot` in ./types for the naming.
- * Case-study copy (`caseStudy`) is written in Phase 3.
+ * Case-study copy lives in ./caseStudies.
  */
 
 const WEBLANDA_WIDTHS = [400, 560, 800, 1024];
@@ -131,6 +132,7 @@ export const projects: Project[] = [
       },
     ],
     logo: "/logos/weblanda-mark.jpg",
+    caseStudy: caseStudies.weblanda,
   },
   {
     slug: "formtified",
@@ -204,6 +206,7 @@ export const projects: Project[] = [
       ),
     ],
     logo: "/logos/formtified-mark.png",
+    caseStudy: caseStudies.formtified,
   },
 ];
 

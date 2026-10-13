@@ -15,11 +15,14 @@ export function DeviceStack({
   phone,
   url,
   reverse = false,
+  eager = false,
 }: {
   desktop: Screenshot;
   phone: Screenshot;
   url: string;
   reverse?: boolean;
+  /** Load the desktop shot straight away, for a cover above the fold. */
+  eager?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -37,6 +40,7 @@ export function DeviceStack({
         <BrowserFrame
           shot={desktop}
           url={url}
+          eager={eager}
           sizes="(min-width: 1280px) 820px, (min-width: 1024px) 64vw, 120vw"
           className="transition-transform duration-700 ease-out-expo group-hover/spot:-translate-y-1"
         />

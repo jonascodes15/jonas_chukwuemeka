@@ -98,7 +98,11 @@ function FeaturedDataProject({ project }: { project: DataProject }) {
 
             <ChipList items={project.stack} className="mt-7" />
             <div className="mt-auto pt-9">
-              <ProjectLinks links={project.links} name={project.name} />
+              <ProjectLinks
+                links={project.links}
+                caseStudyHref={project.caseStudy ? `/work/${project.slug}` : undefined}
+                name={project.name}
+              />
             </div>
           </div>
 
@@ -125,7 +129,7 @@ function FeaturedDataProject({ project }: { project: DataProject }) {
 
         {project.screenshots.length > 0 && (
           <div className="grid gap-6 border-t border-border bg-surface-2/50 p-5 sm:p-8 md:grid-cols-2 lg:p-10">
-            {project.screenshots.map((shot) => (
+            {project.screenshots.slice(0, 2).map((shot) => (
               <figure key={shot.name}>
                 <BrowserFrame shot={shot} sizes="(min-width: 768px) 560px, 90vw" />
                 <figcaption className="mt-3 text-sm text-muted">{shot.caption}</figcaption>
@@ -166,7 +170,12 @@ function DataCard({ project }: { project: DataProject }) {
         <p className="mt-3 text-sm leading-relaxed text-muted">{project.summary}</p>
         <ChipList items={project.stack} className="mt-5" />
         <div className="mt-auto pt-6">
-          <ProjectLinks links={project.links} name={project.name} />
+          <ProjectLinks
+            links={project.links}
+            caseStudyHref={project.caseStudy ? `/work/${project.slug}` : undefined}
+            name={project.name}
+            compact
+          />
         </div>
       </div>
     </Spotlight>

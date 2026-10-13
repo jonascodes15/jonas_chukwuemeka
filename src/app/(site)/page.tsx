@@ -1,3 +1,4 @@
+import { PageTransition } from "@/components/motion/page-transition";
 import { About } from "@/components/sections/about/about";
 import { Contact } from "@/components/sections/contact/contact";
 import { DataLab } from "@/components/sections/data/data-lab";
@@ -10,15 +11,17 @@ import { site } from "@/content/site";
 
 export default function HomePage() {
   return (
-    <>
-      <Hero />
-      <TechMarquee />
-      <Work />
-      <DataLab />
-      <Experience />
-      <About />
-      <Newsletter heading={site.newsletter.heading} body={site.newsletter.body} />
-      <Contact />
-    </>
+    <PageTransition>
+      <div>
+        <Hero />
+        <TechMarquee />
+        <Work />
+        <DataLab />
+        <Experience />
+        <About />
+        <Newsletter heading={site.newsletter.heading} body={site.newsletter.body} />
+        <Contact />
+      </div>
+    </PageTransition>
   );
 }

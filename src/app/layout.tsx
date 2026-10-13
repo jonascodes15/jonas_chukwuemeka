@@ -64,6 +64,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-theme="dark"
+      // Smooth scrolling is for in-page jumps; this tells Next to jump instantly on page changes.
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${mono.variable} antialiased`}
     >

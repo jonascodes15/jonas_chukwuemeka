@@ -1,3 +1,4 @@
+import { caseStudies } from "./caseStudies";
 import type { DataProject, Screenshot } from "./types";
 
 /**
@@ -78,6 +79,15 @@ export const dataProjects: DataProject[] = [
         "BioStreamer's reactor explorer: cumulative and daily biogas yield over 30 days for reactor R001",
         "Reactor explorer: daily and cumulative yield for a single reactor line.",
       ),
+      // From the repo's docs/screenshots. Shown on the case study only (the homepage card shows two).
+      shot(
+        "/projects/biostreamer",
+        "research-chat",
+        1600,
+        1000,
+        "BioStreamer's research chat reporting a failed language model call and returning its retrieval trace anyway",
+        "Research chat: with the API key out of credit, it reports the error and still returns the retrieval trace.",
+      ),
     ],
     architecture: {
       cols: 2,
@@ -156,17 +166,19 @@ export const dataProjects: DataProject[] = [
         { from: "api", to: "ui", label: "/chat" },
       ],
     },
+    caseStudy: caseStudies.biostreamer,
   },
   {
     slug: "agropulse",
     name: "AgroPulse",
-    tagline: "A precision agriculture data platform, from sensor stream to live dashboard.",
+    tagline: "A precision agriculture data platform, from sensor stream to dashboard.",
     summary:
       "Streams simulated soil moisture, canopy temperature, nitrogen and irrigation readings through Kafka (Redpanda) into TimescaleDB for real-time and historical analysis, with a nightly Airflow DAG that recomputes yield forecasts.",
     highlights: [
       "Nightly Airflow DAG recomputes yield forecasts from accumulated sensor data, with no manual runs.",
-      "FastAPI serving layer feeds a React and TypeScript dashboard with live Recharts visualisations.",
-      "All five services run with Docker Compose, so the whole stack starts with one command.",
+      // The README's roadmap says the UI still runs on mock data, so "live" is left out here.
+      "FastAPI serves the latest readings and yield forecasts; the React and TypeScript UI is built with Recharts.",
+      "All five backend services run with Docker Compose, so the whole stack starts with one command.",
     ],
     stack: [
       "Python",
@@ -180,7 +192,7 @@ export const dataProjects: DataProject[] = [
     ],
     links: [
       { label: "View on GitHub", href: "https://github.com/jonascodes15/agropulse", kind: "github" },
-      { label: "Live dashboard", href: "https://agropulsehq.netlify.app", kind: "live" },
+      { label: "Live site", href: "https://agropulsehq.netlify.app", kind: "live" },
     ],
     screenshots: [
       shot(
@@ -228,22 +240,33 @@ export const dataProjects: DataProject[] = [
         { from: "api", to: "db", label: "SQL" },
       ],
     },
+    caseStudy: caseStudies.agropulse,
   },
   {
     slug: "bioflow-iot",
     name: "BioFlow IoT",
     tagline: "A real-time bioreactor telemetry pipeline.",
     summary:
-      "Streams flow rate, temperature and pH readings from a Python simulator through Kafka into a normalised PostgreSQL schema with timestamp indexing, served by FastAPI to a React dashboard that polls every 1.5 seconds.",
+      "Streams flow rate, temperature and pH readings from a Python simulator through Kafka into PostgreSQL with timestamp indexing, served by FastAPI to a React dashboard that polls every 1.5 seconds.",
     highlights: [
       "Timestamp-indexed PostgreSQL schema for efficient range queries.",
       "FastAPI endpoints for the 50 most recent records and the latest reading.",
-      "Four-service stack (simulator, Kafka, consumer, API) containerised with Docker Compose.",
+      // Per the README, only Kafka and PostgreSQL run in Docker Compose; the rest are Python processes.
+      "Kafka and PostgreSQL start with Docker Compose; the simulator, consumer and API run as separate Python services.",
     ],
     stack: ["Python", "Kafka", "PostgreSQL", "FastAPI", "React", "Docker"],
     links: [{ label: "View on GitHub", href: "https://github.com/jonascodes15/bioflow_iot", kind: "github" }],
-    // TODO: add a screenshot of the BioFlow IoT dashboard. The architecture diagram stands in for now.
-    screenshots: [],
+    // From the repo's docs/dashboard-screenshot.png, with the browser's address bar cropped off.
+    screenshots: [
+      shot(
+        "/projects/bioflow-iot",
+        "dashboard",
+        1750,
+        568,
+        "The BioFlow IoT dashboard streaming flow rate, temperature and pH readings",
+        "The live dashboard: flow rate, temperature and pH, refreshed every 1.5 seconds.",
+      ),
+    ],
     architecture: {
       cols: 2,
       nodes: [
@@ -262,6 +285,7 @@ export const dataProjects: DataProject[] = [
         { from: "api", to: "pg", label: "SQL" },
       ],
     },
+    caseStudy: caseStudies["bioflow-iot"],
   },
   {
     slug: "api-to-sql-etl",
@@ -271,7 +295,7 @@ export const dataProjects: DataProject[] = [
       "Extracts user profiles from a live REST API, flattens deeply nested JSON, standardises field formatting and loads clean records into a SQLite warehouse.",
     highlights: [
       "UPSERT logic (ON CONFLICT DO UPDATE) makes repeated runs safe, with no duplicate records.",
-      "Three isolated phases (extract, transform, load) behind one entry point, each testable on its own.",
+      "Three separate phases (extract, transform, load), each in its own module, run in order from one entry point.",
     ],
     stack: ["Python", "SQLite", "Docker"],
     links: [
@@ -298,6 +322,7 @@ export const dataProjects: DataProject[] = [
         { from: "load", to: "sqlite" },
       ],
     },
+    caseStudy: caseStudies["api-to-sql-etl"],
   },
 ];
 

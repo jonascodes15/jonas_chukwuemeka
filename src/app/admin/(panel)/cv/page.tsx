@@ -28,9 +28,7 @@ const linkClasses =
 async function Cv() {
   await requireAdmin();
   const db = getDb();
-  const header = (
-    <PageHeader title="CV" description="The file every Download CV button on the site gives." />
-  );
+  const header = <PageHeader title="CV" description="The file every Download CV button on the site gives." />;
   if (!db) {
     return (
       <>
@@ -102,7 +100,9 @@ async function Cv() {
           ) : (
             <p className="text-sm leading-relaxed text-muted">
               CV uploads need one more database table. Run{" "}
-              <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs text-fg">npm run db:migrate</code>{" "}
+              <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-xs text-fg">
+                npm run db:migrate
+              </code>{" "}
               on your computer, then reload this page.
             </p>
           )}

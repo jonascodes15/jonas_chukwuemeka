@@ -68,6 +68,8 @@ export function Nav() {
         initial={false}
         animate={{ y: hidden && !open ? "-110%" : "0%" }}
         transition={{ duration: 0.35, ease: EASE }}
+        // Named so page transitions leave the header still while the content slides.
+        style={{ viewTransitionName: "site-header" }}
         className="fixed inset-x-0 top-0 z-50"
       >
         <div

@@ -70,13 +70,33 @@ export interface Architecture {
   edges: ArchitectureEdge[];
 }
 
-/** Case-study copy for /work/[slug]. Filled in Phase 3. */
+/** A titled block of copy: a feature, a step or a challenge. */
+export interface CopyBlock {
+  title: string;
+  body: string;
+}
+
+/**
+ * Case-study copy for /work/[slug]. Every claim must trace back to the brief, the CV, LinkedIn
+ * or the project's own README. Anything that can't be backed up stays out (or is marked TODO).
+ */
 export interface CaseStudy {
+  /** Short facts beside the hero, e.g. { label: "Role", value: "Founder, solo build" }. */
+  facts: { label: string; value: string }[];
   problem: string[];
-  built: string[];
-  howItWorks: string[];
+  builtIntro: string;
+  built: CopyBlock[];
+  /** The main flow, in order. */
+  howItWorks: CopyBlock[];
+  /** Diagram for How it works. Data projects fall back to their own `architecture`. */
+  architecture?: Architecture;
   stackWhy: { tech: string; why: string }[];
-  challenges: string[];
+  challenges: CopyBlock[];
+  learned: string[];
+  /** What the project deliberately is not, in the project's own words. */
+  scope?: string;
+  /** Shown above the gallery, e.g. "Every screen shows a demo shop." */
+  galleryNote?: string;
 }
 
 export interface Project {

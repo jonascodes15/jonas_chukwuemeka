@@ -123,7 +123,8 @@ export async function uploadCv(_prev: CvState, formData: FormData): Promise<CvSt
   const d = await db();
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) return { status: "error", message: "Choose a PDF first." };
-  if (file.size > MAX_CV_BYTES) return { status: "error", message: "That file is over 4 MB. Export a smaller PDF." };
+  if (file.size > MAX_CV_BYTES)
+    return { status: "error", message: "That file is over 4 MB. Export a smaller PDF." };
 
   const bytes = Buffer.from(await file.arrayBuffer());
   // Check the content, not just the name: every PDF starts with "%PDF-".

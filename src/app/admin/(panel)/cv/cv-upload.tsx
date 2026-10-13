@@ -11,7 +11,10 @@ export function CvUpload({ maxBytes }: { maxBytes: number }) {
   // Checked here too, so an oversized file never hits the server's request size limit.
   const [tooBig, setTooBig] = useState(false);
   const message = tooBig
-    ? { status: "error" as const, message: `That file is over ${maxBytes / 1024 / 1024} MB. Export a smaller PDF.` }
+    ? {
+        status: "error" as const,
+        message: `That file is over ${maxBytes / 1024 / 1024} MB. Export a smaller PDF.`,
+      }
     : state;
 
   return (
@@ -30,7 +33,9 @@ export function CvUpload({ maxBytes }: { maxBytes: number }) {
           }}
           className="block w-full cursor-pointer rounded-xl border border-border bg-bg text-sm text-muted file:mr-4 file:cursor-pointer file:border-0 file:bg-surface-2 file:px-4 file:py-3 file:text-sm file:font-medium file:text-fg hover:file:bg-border"
         />
-        <span className="text-xs text-muted">PDF only, up to {maxBytes / 1024 / 1024} MB. It replaces the current CV.</span>
+        <span className="text-xs text-muted">
+          PDF only, up to {maxBytes / 1024 / 1024} MB. It replaces the current CV.
+        </span>
       </label>
 
       <div>
