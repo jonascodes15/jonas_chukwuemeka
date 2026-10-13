@@ -1,7 +1,7 @@
 /** Education, training and research. Source: CV, cross-checked against the brief. */
 
 export const degree = {
-  qualification: "Bachelor of Science, Biology",
+  qualification: "Bachelor of Technology, Biology",
   institution: "Federal University of Technology, Owerri",
   shortName: "FUTO",
   start: "2017",

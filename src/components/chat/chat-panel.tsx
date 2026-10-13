@@ -266,7 +266,6 @@ export default function ChatPanel({
           <ArrowUp aria-hidden className="size-5" />
         </button>
       </form>
-      <p className="pb-2.5 text-center text-[0.68rem] text-muted">Answers written by Jay. No AI involved.</p>
     </motion.div>
   );
 }

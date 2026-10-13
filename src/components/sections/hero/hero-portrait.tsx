@@ -58,7 +58,7 @@ export function HeroPortrait({ name }: { name: string }) {
       </FloatingChip>
       <FloatingChip className="top-[46%] -right-3 sm:-right-8" delay={1.05} drift={6}>
         <GraduationCap aria-hidden className="size-4 text-accent-ink" />
-        BSc Biology, FUTO
+        BTech Biology, FUTO
       </FloatingChip>
       <FloatingChip className="bottom-16 -left-2 sm:-left-12" delay={1.2} drift={-5}>
         <BookOpen aria-hidden className="size-4 text-accent-ink" />
