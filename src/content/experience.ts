@@ -71,13 +71,15 @@ export const experience: ExperienceItem[] = [
     location: "Imo State, Nigeria",
     logo: "/logos/futo.png",
     summary:
-      "Partnered with the Rotaract Club of FUTO to deliver free HIV screening and health sensitisation, giving students on-campus access to testing and awareness they otherwise lacked.",
+      "Started and led a joint task force that cleared expired food, drinks and other consumables from shops across the FUTO community after the COVID-19 break, protecting students returning to campus.",
     details: [
-      "Worked with the Rotaract Club of FUTO (District 9142) to run free on-campus HIV screening and health sensitisation for students.",
+      "Started a food safety initiative and led a joint task force of the Directorate of Welfare task force and the Man O' War FUTO Command, with the support of the Dean of Student Affairs, Prof. C.E. Orji, and university management.",
+      "Inspected shops and vendors across the FUTO community and removed expired food items, drinks and eatables after the COVID-19 break and during long session breaks.",
+      "Worked with the Rotaract Club of FUTO (District 9142) to run free on-campus health screening and wellness awareness for students.",
       "Led a campus-wide cleanup and hygiene sensitisation campaign.",
       "Managed welfare budgeting and logistics, and resolved student grievances directly with university management.",
     ],
-    skills: ["Team Collaboration", "Student Leadership"],
+    skills: ["Team Collaboration", "Student Leadership", "Public Health"],
   },
 ];
 
