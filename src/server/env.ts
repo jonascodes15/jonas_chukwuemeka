@@ -31,5 +31,6 @@ export function configStatus() {
     contactTo: has("CONTACT_TO_EMAIL"),
     admin: has("ADMIN_EMAIL") && has("ADMIN_PASSWORD_HASH") && has("SESSION_SECRET"),
     ipSalt: has("IP_HASH_SALT"),
+    calWebhook: has("CAL_WEBHOOK_SECRET"),
   };
 }

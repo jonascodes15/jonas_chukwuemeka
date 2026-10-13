@@ -2,7 +2,9 @@ import type { FaqItem } from "./types";
 
 /**
  * Answers for the "Chat with me" widget. No AI model is involved: typed questions are matched
- * against `keywords`, and unmatched questions fall back to an email capture.
+ * against `keywords` (see src/lib/faq-match.ts), and unmatched questions fall back to an email
+ * capture. Keywords match the start of a word, so "intern" also catches "internship".
+ * The questions people ask, answered or not, show up in /admin/chats.
  */
 
 export const chatGreeting =
@@ -41,7 +43,18 @@ export const faq: FaqItem[] = [
     question: "How long does a project take?",
     answer:
       "That depends on scope too. A focused business site is much quicker than a custom web app with accounts, payments and a dashboard. Once I understand what you need, I'll give you a realistic timeline before any work starts.",
-    keywords: ["long", "time", "timeline", "weeks", "duration", "deadline", "fast can you", "when"],
+    keywords: [
+      "how long",
+      "long",
+      "take",
+      "time",
+      "timeline",
+      "weeks",
+      "duration",
+      "deadline",
+      "fast can you",
+      "when",
+    ],
   },
   {
     id: "stack",
@@ -56,7 +69,7 @@ export const faq: FaqItem[] = [
     answer:
       "Weblanda is the e-commerce platform I founded and built. It lets Nigerian small businesses run their own online store, with checkout, delivery and a seller dashboard, all from a phone. Sellers are paid directly into their own Paystack subaccounts, and Weblanda takes no cut of sales.",
     keywords: ["weblanda", "platform", "your company", "startup", "e-commerce", "ecommerce"],
-    action: { label: "Read the case study", target: "work" },
+    action: { label: "Read the case study", target: "case-study", slug: "weblanda" },
   },
   {
     id: "roles",

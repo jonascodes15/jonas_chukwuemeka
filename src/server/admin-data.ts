@@ -161,6 +161,29 @@ export function listChats(db: Db, onlyUnanswered: boolean) {
     .limit(200);
 }
 
+/** Which FAQ answers were given most, for the "Most asked" list. */
+export async function topFaqs(db: Db, days: number, limit = 10): Promise<TopRow[]> {
+  const { rows } = await db.execute<TopRow>(sql`
+    select matched_faq_id as key, count(*)::int as count
+    from chat_logs
+    where matched_faq_id is not null and created_at >= ${since(days)}
+    group by matched_faq_id order by count desc limit ${limit}`);
+  return rows;
+}
+
+/**
+ * "Book a call" clicks by where they happened (header, contact section, case study, chat).
+ * Every booking button is tagged with a label ending in "book-call".
+ */
+export async function bookCallClicks(db: Db, days: number): Promise<TopRow[]> {
+  const { rows } = await db.execute<TopRow>(sql`
+    select label as key, count(*)::int as count
+    from events
+    where type = 'click' and label like '%book-call' and created_at >= ${since(days)}
+    group by label order by count desc`);
+  return rows;
+}
+
 export function listBookings(db: Db, upcoming: boolean) {
   return db
     .select()

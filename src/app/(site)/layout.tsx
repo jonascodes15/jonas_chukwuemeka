@@ -1,4 +1,7 @@
+import { Suspense } from "react";
 import { Tracker } from "@/components/analytics/tracker";
+import { BookingLinks } from "@/components/booking/booking-links";
+import { Floating } from "@/components/chat/floating";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
 import { SectionLinks } from "@/components/layout/section-links";
@@ -21,6 +24,10 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <Footer />
       <Tracker />
       <SectionLinks />
+      <BookingLinks />
+      <Suspense fallback={null}>
+        <Floating />
+      </Suspense>
     </>
   );
 }

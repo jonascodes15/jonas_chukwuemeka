@@ -153,6 +153,10 @@ export interface FaqItem {
   answer: string;
   /** Lower-case words or phrases used to match typed questions. */
   keywords: string[];
-  /** Optional call to action shown under the answer. */
-  action?: { label: string; target: "contact" | "book" | "whatsapp" | "work" | "cv" };
+  /** Optional call to action shown under the answer. "case-study" needs a `slug`. */
+  action?: {
+    label: string;
+    target: "contact" | "book" | "whatsapp" | "work" | "cv" | "case-study";
+    slug?: string;
+  };
 }

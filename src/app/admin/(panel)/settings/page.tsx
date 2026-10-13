@@ -32,6 +32,7 @@ async function Settings() {
     { ok: status.contactTo, label: "Enquiry inbox", detail: "CONTACT_TO_EMAIL" },
     { ok: status.ipSalt, label: "Analytics and rate limiting", detail: "IP_HASH_SALT" },
     { ok: status.admin, label: "Admin login", detail: "ADMIN_EMAIL, ADMIN_PASSWORD_HASH and SESSION_SECRET" },
+    { ok: status.calWebhook, label: "Cal.com bookings log", detail: "CAL_WEBHOOK_SECRET" },
   ];
 
   return (

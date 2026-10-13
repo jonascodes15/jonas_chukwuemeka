@@ -26,6 +26,7 @@ export function Contact() {
     icon: ComponentType<{ className?: string }>;
     external?: boolean;
     download?: string;
+    track?: string;
   }[] = [
     ...(site.calLink
       ? [
@@ -35,6 +36,7 @@ export function Contact() {
             detail: "Pick a time that suits you",
             icon: CalendarDays,
             external: true,
+            track: "contact:book-call",
           },
         ]
       : []),
@@ -83,6 +85,7 @@ export function Contact() {
                       href={c.href}
                       {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       {...(c.download ? { download: c.download } : {})}
+                      data-track={c.track}
                       className="group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-border-strong"
                     >
                       <span
