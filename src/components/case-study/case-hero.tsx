@@ -1,8 +1,8 @@
-import { ArrowLeft } from "lucide-react";
+﻿import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Counter } from "@/components/motion/counter";
-import { Reveal } from "@/components/motion/reveal";
+import { Enter } from "@/components/motion/enter";
 import { ArchitectureDiagram } from "@/components/sections/data/architecture-diagram";
 import { DeviceStack } from "@/components/sections/work/device-stack";
 import { ProjectLinks } from "@/components/sections/work/project-links";
@@ -40,7 +40,7 @@ export function CaseHero({
       />
 
       <div className="container-page">
-        <Reveal y={10}>
+        <Enter y={10}>
           <Link
             href={`/#${section}`}
             transitionTypes={["nav-back"]}
@@ -49,11 +49,11 @@ export function CaseHero({
             <ArrowLeft aria-hidden className="size-4 transition-transform group-hover:-translate-x-0.5" />
             {section === "work" ? "Back to work" : "Back to data work"}
           </Link>
-        </Reveal>
+        </Enter>
 
         <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div>
-            <Reveal y={16} delay={0.05}>
+            <Enter y={16} delay={0.05}>
               <p className="flex items-center gap-3 font-mono text-xs tracking-[0.18em] text-muted uppercase">
                 {project.logo && (
                   <span className="relative size-9 overflow-hidden rounded-xl border border-border">
@@ -62,22 +62,22 @@ export function CaseHero({
                 )}
                 Case study {String(position).padStart(2, "0")} / {String(total).padStart(2, "0")}
               </p>
-            </Reveal>
-            <Reveal y={24} delay={0.1}>
+            </Enter>
+            <Enter y={24} delay={0.1}>
               <h1 className="mt-6 font-display text-section font-extrabold text-balance text-fg uppercase">
                 {project.name}
               </h1>
-            </Reveal>
-            <Reveal y={20} delay={0.18}>
+            </Enter>
+            <Enter y={20} delay={0.18}>
               <p className="mt-6 text-xl font-medium text-balance text-fg sm:text-2xl">{project.tagline}</p>
               <p className="mt-4 max-w-xl leading-relaxed text-muted">{project.summary}</p>
-            </Reveal>
-            <Reveal y={16} delay={0.26} className="mt-8">
+            </Enter>
+            <Enter y={16} delay={0.26} className="mt-8">
               <ProjectLinks links={project.links} name={project.name} />
-            </Reveal>
+            </Enter>
           </div>
 
-          <Reveal y={32} delay={0.15}>
+          <Enter y={32} delay={0.15}>
             <div className="relative isolate overflow-hidden rounded-card border border-border bg-surface-2/60">
               <div
                 aria-hidden
@@ -95,10 +95,10 @@ export function CaseHero({
                 </div>
               ) : null}
             </div>
-          </Reveal>
+          </Enter>
         </div>
 
-        <Reveal y={16} delay={0.1} className="mt-14 md:mt-20">
+        <Enter y={16} delay={0.1} className="mt-14 md:mt-20">
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
             {caseStudy.facts.map((f) => (
               <div key={f.label} className="bg-surface p-4 sm:p-5">
@@ -119,7 +119,7 @@ export function CaseHero({
               ))}
             </dl>
           )}
-        </Reveal>
+        </Enter>
       </div>
     </section>
   );

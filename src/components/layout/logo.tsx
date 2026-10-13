@@ -14,8 +14,8 @@ export function Logo({ className, onClick }: { className?: string; onClick?: () 
       <LogoMark className="size-8 text-accent-ink transition-transform duration-500 ease-out-expo group-hover:scale-105 sm:size-9" />
       {/* Thin, spaced capitals to match the monoline JC in the mark. */}
       <span className="flex flex-col gap-0.75 text-[0.7rem] leading-none tracking-[0.16em] text-fg uppercase">
-        <span className="font-medium">Jonas</span>
-        <span>Chukwuemeka</span>
+        {/* The space keeps the accessible name "Jonas Chukwuemeka" rather than one run-together word. */}
+        <span className="font-medium">Jonas</span> <span>Chukwuemeka</span>
       </span>
     </Link>
   );

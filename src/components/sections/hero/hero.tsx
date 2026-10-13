@@ -1,6 +1,6 @@
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+﻿import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { SocialIcon } from "@/components/icons/social-icon";
-import { Reveal } from "@/components/motion/reveal";
+import { Enter } from "@/components/motion/enter";
 import { ButtonLink } from "@/components/ui/button";
 import { site } from "@/content/site";
 import { activeSocials } from "@/content/socials";
@@ -22,16 +22,16 @@ export function Hero() {
             <HeroHeadline text={site.hero.headline} highlight={site.hero.highlight} />
           </h1>
 
-          <Reveal delay={0.7} y={16}>
+          <Enter delay={0.5}>
             <p className="mt-7 font-display text-xl font-semibold tracking-tight text-fg sm:text-2xl">
               {site.hero.subline}
             </p>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
               {site.hero.supporting}
             </p>
-          </Reveal>
+          </Enter>
 
-          <Reveal delay={0.85} y={16}>
+          <Enter delay={0.65}>
             <div className="mt-9 flex flex-wrap gap-3">
               <ButtonLink href={`/#${site.hero.primaryCta.target}`} size="lg" data-track="hero:see-my-work">
                 {site.hero.primaryCta.label}
@@ -69,7 +69,7 @@ export function Hero() {
                 </li>
               ))}
             </ul>
-          </Reveal>
+          </Enter>
         </div>
 
         <HeroPortrait name={site.name} />
@@ -107,11 +107,11 @@ async function AvailabilityBadge() {
   const { availableForWork, availabilityLabel } = await getSettings();
   if (!availableForWork) return null;
   return (
-    <Reveal y={12} className="mb-7">
+    <Enter y={12} className="mb-7">
       <p className="inline-flex items-center gap-2.5 rounded-pill border border-border bg-surface/70 py-1.5 pr-4 pl-3 text-sm text-muted backdrop-blur">
         <span aria-hidden className="size-2 animate-pulse-dot rounded-full bg-accent" />
         {availabilityLabel}
       </p>
-    </Reveal>
+    </Enter>
   );
 }

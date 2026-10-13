@@ -1,15 +1,13 @@
-"use client";
+import type { CSSProperties } from "react";
 
-import { motion } from "motion/react";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 const WORD_STEP = 0.06;
-const FIRST_DELAY = 0.15;
+const FIRST_DELAY = 0.1;
 
 /**
  * Headline that rises in word by word from behind a mask, then sweeps a lime highlight
- * behind the `highlight` phrase (a run of words inside `text`). The highlight is plain CSS
- * animation (see `highlight-sweep` and `ink` in globals.css), so it costs no JavaScript.
+ * behind the `highlight` phrase (a run of words inside `text`). All of it is CSS animation
+ * (`rise`, `highlight-sweep` and `ink` in globals.css), so the headline paints with the HTML
+ * and costs no JavaScript.
  */
 export function HeroHeadline({ text, highlight }: { text: string; highlight: string }) {
   const start = text.indexOf(highlight);
@@ -50,14 +48,12 @@ function Words({ list, offset }: { list: string[]; offset: number }) {
     <span key={i}>
       {i > 0 && " "}
       <span className="inline-block overflow-hidden pb-[0.08em] align-top">
-        <motion.span
-          className="inline-block"
-          initial={{ y: "110%" }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.9, ease: EASE, delay: FIRST_DELAY + (offset + i) * WORD_STEP }}
+        <span
+          className="animate-rise inline-block"
+          style={{ "--enter-delay": `${FIRST_DELAY + (offset + i) * WORD_STEP}s` } as CSSProperties}
         >
           {word}
-        </motion.span>
+        </span>
       </span>
     </span>
   ));

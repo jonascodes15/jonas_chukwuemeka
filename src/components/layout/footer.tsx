@@ -84,13 +84,12 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Oversized name as a quiet sign-off. Decorative only. */}
-      <p
+      {/* Oversized name as a quiet sign-off. Decorative only, so it's drawn by CSS rather than
+          being text that screen readers or contrast checks would treat as content. */}
+      <div
         aria-hidden
-        className="pointer-events-none -mb-[0.18em] text-center font-display text-[13.5vw] leading-none font-extrabold tracking-[-0.05em] text-surface-2 uppercase select-none"
-      >
-        Chukwuemeka
-      </p>
+        className="pointer-events-none -mb-[0.18em] text-center font-display text-[13.5vw] leading-none font-extrabold tracking-[-0.05em] text-surface-2 uppercase select-none before:content-['Chukwuemeka']"
+      />
     </footer>
   );
 }

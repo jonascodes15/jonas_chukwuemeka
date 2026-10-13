@@ -1,4 +1,5 @@
 import { PageTransition } from "@/components/motion/page-transition";
+import { homeSchema, JsonLd } from "@/components/seo/json-ld";
 import { About } from "@/components/sections/about/about";
 import { Contact } from "@/components/sections/contact/contact";
 import { DataLab } from "@/components/sections/data/data-lab";
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <PageTransition>
       <div>
+        <JsonLd data={homeSchema()} />
         <Hero />
         <TechMarquee />
         <Work />

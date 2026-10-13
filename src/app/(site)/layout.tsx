@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import { Tracker } from "@/components/analytics/tracker";
 import { BookingLinks } from "@/components/booking/booking-links";
@@ -5,6 +7,7 @@ import { Floating } from "@/components/chat/floating";
 import { Footer } from "@/components/layout/footer";
 import { Nav } from "@/components/layout/nav";
 import { SectionLinks } from "@/components/layout/section-links";
+import { RevealObserver } from "@/components/motion/reveal-observer";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
@@ -23,7 +26,11 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <Footer />
       <Tracker />
+      {/* Vercel's own analytics and Core Web Vitals; they only report on Vercel deployments. */}
+      <Analytics />
+      <SpeedInsights />
       <SectionLinks />
+      <RevealObserver />
       <BookingLinks />
       <Suspense fallback={null}>
         <Floating />

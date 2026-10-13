@@ -6,6 +6,7 @@ import { CaseSection } from "@/components/case-study/case-section";
 import { Gallery } from "@/components/case-study/gallery";
 import { ReadingProgress } from "@/components/case-study/reading-progress";
 import { PageTransition } from "@/components/motion/page-transition";
+import { caseStudySchema, JsonLd } from "@/components/seo/json-ld";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { ArchitectureDiagram } from "@/components/sections/data/architecture-diagram";
 import { ProjectLinks } from "@/components/sections/work/project-links";
@@ -26,19 +27,8 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   const { project } = entry;
   const title = `${project.name} case study`;
   const url = `/work/${project.slug}`;
-  // Until Phase 7 adds generated OG images, share the project's largest desktop screenshot.
-  const cover = project.screenshots.find((s) => s.device === "desktop");
-  const images = cover
-    ? [
-        {
-          url: `${cover.dir}/${cover.name}-${cover.widths[cover.widths.length - 1]}.webp`,
-          width: cover.widths[cover.widths.length - 1],
-          height: Math.round((cover.height / cover.width) * cover.widths[cover.widths.length - 1]),
-          alt: cover.alt,
-        },
-      ]
-    : undefined;
 
+  // The share image comes from opengraph-image.tsx next to this page; X falls back to it too.
   return {
     title,
     description: project.tagline,
@@ -50,14 +40,12 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
       url,
       title: `${title} | ${site.name}`,
       description: project.tagline,
-      images,
     },
     twitter: {
       card: "summary_large_image",
       creator: "@JCK_ng",
       title: `${title} | ${site.name}`,
       description: project.tagline,
-      images: images?.map((i) => i.url),
     },
   };
 }
@@ -87,6 +75,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   return (
     <PageTransition>
       <article>
+        <JsonLd data={caseStudySchema(entry)} />
         <ReadingProgress />
         <CaseHero entry={entry} position={index + 1} total={caseStudyEntries.length} />
 

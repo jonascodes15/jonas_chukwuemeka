@@ -226,6 +226,76 @@
   }
 }
 
+/* Entrance animations for content above the fold (see components/motion/enter.tsx). Pure CSS,
+   so text paints with the HTML instead of waiting for JavaScript, which keeps LCP fast. */
+/* Starts at 1% rather than 0: browsers skip fully transparent text when timing the largest
+   paint, then wait for the main thread to free up before counting it. 1% looks the same. */
+@keyframes enter {
+  from {
+    opacity: 0.01;
+    transform: translateY(var(--enter-y, 16px));
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+.animate-enter {
+  animation: enter 0.8s var(--ease-out-expo) var(--enter-delay, 0s) both;
+}
+.animate-rise {
+  animation: rise 0.9s var(--ease-out-expo) var(--enter-delay, 0s) both;
+}
+
+/* Scroll reveals (see components/motion/reveal.tsx). Hidden only when JavaScript can reveal them
+   and the visitor hasn't asked for reduced motion; RevealObserver adds .is-revealed in view. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal],
+  [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 28px));
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  [data-reveal-item] {
+    transition-duration: 0.7s;
+    /* Items inherit the group's delay and stagger, and step by their position. */
+    transition-delay: calc(var(--reveal-delay, 0s) + var(--reveal-i, 0) * var(--reveal-stagger, 0.08s));
+  }
+  [data-reveal].is-revealed,
+  .is-revealed [data-reveal-item] {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-reveal-item]:nth-child(2) {
+  --reveal-i: 1;
+}
+[data-reveal-item]:nth-child(3) {
+  --reveal-i: 2;
+}
+[data-reveal-item]:nth-child(4) {
+  --reveal-i: 3;
+}
+[data-reveal-item]:nth-child(5) {
+  --reveal-i: 4;
+}
+[data-reveal-item]:nth-child(6) {
+  --reveal-i: 5;
+}
+[data-reveal-item]:nth-child(7) {
+  --reveal-i: 6;
+}
+[data-reveal-item]:nth-child(8) {
+  --reveal-i: 7;
+}
+[data-reveal-item]:nth-child(n + 9) {
+  --reveal-i: 8;
+}
+
 /* Hero highlight (used through inline animation styles, so kept outside @theme):
    the lime bar sweeps in, then the words over it turn dark. */
 @keyframes highlight-sweep {
