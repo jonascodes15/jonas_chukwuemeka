@@ -1,22 +1,12 @@
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import Image from "next/image";
-import { Counter } from "@/components/motion/counter";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { dataProjects } from "@/content/dataProjects";
 import { degree, publication, training } from "@/content/education";
-import { projects, stores } from "@/content/projects";
 import { site } from "@/content/site";
 import { AboutPhoto } from "./about-photo";
 
 export function About() {
-  // Counted from the content files, so these stay true as projects are added.
-  const facts = [
-    { value: projects.length, label: "Products built and live" },
-    { value: stores.length, label: "Seller stores on Weblanda" },
-    { value: dataProjects.length, label: "Data pipelines built" },
-    { value: 1, label: "Peer-reviewed publication" },
-  ];
   const [lead, ...rest] = site.about.paragraphs;
 
   return (
@@ -47,19 +37,6 @@ export function About() {
                 </Reveal>
               ))}
             </div>
-
-            <RevealGroup as="div" className="mt-10">
-              <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border sm:grid-cols-4">
-                {facts.map((f) => (
-                  <RevealItem key={f.label} className="flex flex-col-reverse justify-end gap-1 bg-bg p-5">
-                    <dt className="text-xs leading-snug text-muted">{f.label}</dt>
-                    <dd className="font-display text-4xl font-extrabold tracking-tight text-fg">
-                      <Counter value={f.value} />
-                    </dd>
-                  </RevealItem>
-                ))}
-              </dl>
-            </RevealGroup>
 
             <div className="mt-12 grid gap-4 sm:grid-cols-2">
               <Reveal className="rounded-card border border-border bg-surface p-6">
