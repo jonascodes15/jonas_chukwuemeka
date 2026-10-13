@@ -65,7 +65,7 @@ export const experience: ExperienceItem[] = [
   {
     title: "Students' Union Director of Welfare",
     organisation: "Federal University of Technology Owerri",
-    type: "Contract",
+    type: "Elected by student vote",
     start: "2019-09",
     end: "2021-03",
     location: "Imo State, Nigeria",

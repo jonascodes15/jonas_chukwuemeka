@@ -36,7 +36,8 @@ export const dataProjects: DataProject[] = [
     ],
     // TODO: the fleet-overview screenshot reads 0.029 ml/day and 266 soured reactor-days, while the README
     // says 0.042 ml/day and 361. The README figure is used here; retake the screenshot from the same run.
-    // TODO: ~27,000 rows/s comes from the CV and is not in the README. Confirm it.
+    // TODO: ~27,000 rows/s comes only from the original project brief; it is not in the README or the CV.
+    // Jay is checking it. Keep it, document it in the README, or remove it.
     metrics: [
       {
         value: 0.042,
