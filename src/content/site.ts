@@ -88,8 +88,10 @@ export const site = {
 
   footer: {
     signOff: "Building useful things from Lagos, one shipped product at a time.",
-    /** Credit for the Framer template the look was inspired by. Nothing from it is used directly. */
+    /** Credit for the Framer template the look was inspired by. Nothing from it is used directly.
+     *  Hidden for now; set `show` to true to put the line back under the copyright. */
     credit: {
+      show: false as boolean,
       template: "Sawad",
       author: "Mejed Alkoutaini",
       href: "https://www.framer.com/marketplace/templates/sawad/",
