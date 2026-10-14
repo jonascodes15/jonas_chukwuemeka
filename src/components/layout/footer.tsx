@@ -77,9 +77,24 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col-reverse items-start justify-between gap-6 border-t border-border pt-8 sm:flex-row sm:items-center">
-          <p className="text-sm text-muted">
-            © <CurrentYear /> {site.fullName}. All rights reserved.
-          </p>
+          <div>
+            <p className="text-sm text-muted">
+              © <CurrentYear /> {site.fullName}. All rights reserved.
+            </p>
+            <p className="mt-1.5 text-[0.7rem] text-muted">
+              Design inspired by{" "}
+              <a
+                href={site.footer.credit.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-border-strong underline-offset-2 transition-colors hover:text-accent-ink hover:decoration-current"
+              >
+                {site.footer.credit.template}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>{" "}
+              by {site.footer.credit.author}
+            </p>
+          </div>
           <BackToTop />
         </div>
       </div>
