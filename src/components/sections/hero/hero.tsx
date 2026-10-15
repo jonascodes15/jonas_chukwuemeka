@@ -74,17 +74,6 @@ export function Hero() {
 
         <HeroPortrait name={site.name} />
       </div>
-
-      <a
-        href="#work"
-        aria-label="Scroll to work"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-mono text-[0.65rem] tracking-[0.25em] text-muted uppercase transition-colors hover:text-fg lg:flex"
-      >
-        Scroll
-        <span aria-hidden className="relative h-10 w-px overflow-hidden bg-border">
-          <span className="absolute inset-0 animate-scroll-cue bg-fg" />
-        </span>
-      </a>
     </section>
   );
 }

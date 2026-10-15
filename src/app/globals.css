@@ -98,7 +98,6 @@
   --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
   --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
   --animate-drift: drift 18s ease-in-out infinite alternate;
-  --animate-scroll-cue: scroll-cue 2.2s ease-in-out infinite;
 
   @keyframes drift {
     from {
@@ -106,25 +105,6 @@
     }
     to {
       transform: translate3d(14%, 8%, 0) scale(1.15);
-    }
-  }
-
-  @keyframes scroll-cue {
-    0% {
-      transform: scaleY(0);
-      transform-origin: top;
-    }
-    45% {
-      transform: scaleY(1);
-      transform-origin: top;
-    }
-    55% {
-      transform: scaleY(1);
-      transform-origin: bottom;
-    }
-    100% {
-      transform: scaleY(0);
-      transform-origin: bottom;
     }
   }
 
