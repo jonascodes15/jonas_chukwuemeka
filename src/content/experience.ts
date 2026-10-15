@@ -66,8 +66,8 @@ export const experience: ExperienceItem[] = [
     title: "Students' Union Director of Welfare",
     organisation: "Federal University of Technology Owerri",
     type: "Elected by student vote",
-    start: "2019-09",
-    end: "2021-03",
+    start: "2019-11",
+    end: "2021-07",
     location: "Imo State, Nigeria",
     logo: "/logos/futo.png",
     summary:
