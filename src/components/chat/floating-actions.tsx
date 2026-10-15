@@ -71,10 +71,7 @@ export function FloatingActions({
             <span className="absolute right-0 bottom-0 size-3 rounded-full border-2 border-surface bg-accent" />
           )}
         </span>
-        <span className="text-left leading-tight">
-          <span className="block text-sm font-semibold tracking-tight text-fg">Ask Jay</span>
-          <span className="block text-xs text-muted">Instant answers</span>
-        </span>
+        <span className="text-sm leading-tight font-semibold tracking-tight text-fg">Ask Jay</span>
       </button>
 
       {mounted && (
