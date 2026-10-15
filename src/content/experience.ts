@@ -71,7 +71,7 @@ export const experience: ExperienceItem[] = [
     location: "Imo State, Nigeria",
     logo: "/logos/futo.png",
     summary:
-      "Started and led a joint task force that cleared expired food, drinks and other consumables from shops across the FUTO community after the COVID-19 break, protecting students returning to campus.",
+      "Led a joint task force that cleared expired food, drinks and other consumables from shops across the FUTO community after the COVID-19 break, protecting students returning to campus.",
     details: [
       "Started a food safety initiative and led a joint task force of the Directorate of Welfare task force and the Man O' War FUTO Command, with the support of the Dean of Student Affairs, Prof. C.E. Orji, and university management.",
       "Inspected shops and vendors across the FUTO community and removed expired food items, drinks and eatables after the COVID-19 break and during long session breaks.",
