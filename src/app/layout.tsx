@@ -53,10 +53,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e0d" },
-  ],
+  // The site opens in dark mode for everyone, so the browser bar matches it.
+  themeColor: "#0e0e0d",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

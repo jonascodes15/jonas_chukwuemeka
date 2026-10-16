@@ -1,7 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useEffect, useLayoutEffect, useSyncExternalStore } from "react";
+import { useLayoutEffect, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { THEME_STORAGE_KEY } from "./theme-script";
 
@@ -14,10 +14,6 @@ function readStored(): Theme | null {
   } catch {
     return null;
   }
-}
-
-function systemTheme(): Theme {
-  return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 function applyTheme(theme: Theme) {
@@ -46,17 +42,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   // Re-apply before paint. In development React's Strict Mode remount clears the attribute
   // the inline script set; in production this is a no-op.
   useLayoutEffect(() => {
-    applyTheme(readStored() ?? systemTheme());
-  }, []);
-
-  // Follow the system setting until the visitor makes an explicit choice.
-  useEffect(() => {
-    const mq = matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      if (!readStored()) applyTheme(systemTheme());
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    applyTheme(readStored() ?? "dark");
   }, []);
 
   const toggle = () => {
