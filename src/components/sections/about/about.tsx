@@ -1,7 +1,6 @@
 import { ArrowUpRight, BookOpen } from "lucide-react";
 import Image from "next/image";
 import { Reveal } from "@/components/motion/reveal";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { degree, publication, training } from "@/content/education";
 import { site } from "@/content/site";
 import { AboutPhoto } from "./about-photo";
@@ -10,14 +9,15 @@ export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="border-t border-border py-24 md:py-32">
       <div className="container-page">
-        <SectionHeading
+        <h2
           id="about-title"
-          eyebrow="About"
-          lead="Builder first."
-          trail="Biologist by training."
-        />
+          className="flex items-center gap-2 font-mono text-xs tracking-[0.18em] text-muted uppercase"
+        >
+          <span aria-hidden className="inline-block size-1.5 rounded-full bg-accent" />
+          About
+        </h2>
 
-        <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+        <div className="mt-8 grid gap-12 md:mt-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
           <Reveal className="mx-auto w-full max-w-sm lg:sticky lg:top-28 lg:max-w-none lg:self-start">
             <AboutPhoto alt={`${site.name}, full-length portrait`} />
           </Reveal>

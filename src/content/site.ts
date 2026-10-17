@@ -59,8 +59,10 @@ export const site = {
 
   about: {
     paragraphs: [
-      "My background is in biology. I hold a degree from FUTO Owerri and I'm a co-author on a peer-reviewed research publication. That training shapes how I build: clean data, careful testing, and understanding how things actually work before I call them done.",
-      "I'm growing my skills in data engineering, with a strong interest in biological and health data. I use AI tools to build faster, and I make sure I understand every part of what I ship.",
+      "I'm Jonas, a full-stack developer and the founder of Weblanda. I build web apps and online stores for businesses, and I take them the whole way: from the first product decision to the database, the checkout, and the payment that lands in the owner's account.",
+      "Weblanda is my biggest build, a platform that gives small businesses their own online store with real checkout, delivery, and a dashboard they can run from their phone. I also built Formtified, an AI tool that turns a short brief into a ready-to-share client onboarding form, and I take on custom web apps for businesses that need something made from scratch.",
+      "My background is in biology. I hold a BTech from FUTO Owerri and I'm a co-author on a peer-reviewed research publication. That training is where my engineering habits come from: I work with clean data, test carefully, and understand how something actually works before I call it done.",
+      "Right now I'm deepening my work in data engineering, with a strong interest in biological and health data. I use AI tools to move fast, but I make sure I understand every part of what I ship.",
     ],
   },
 
