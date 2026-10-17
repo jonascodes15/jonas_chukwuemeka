@@ -47,3 +47,6 @@ next-env.d.ts
 # full-size screenshot sources (optimised copies live in /public)
 /portfolio-screenshots-formtified/
 /portfolio-weblanda-screens/
+
+# social cover image source and exports (not part of the site)
+/social-cover/
