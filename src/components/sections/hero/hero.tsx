@@ -23,10 +23,7 @@ export function Hero() {
           </h1>
 
           <Enter delay={0.5}>
-            <p className="mt-7 font-display text-xl font-semibold tracking-tight text-fg sm:text-2xl">
-              {site.hero.subline}
-            </p>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
               {site.hero.supporting}
             </p>
           </Enter>

@@ -12,10 +12,12 @@ export default async function Image() {
   const { headline, highlight } = site.hero;
   // Word by word, with the highlighted phrase kept together, so lines wrap cleanly.
   const [before, after] = headline.split(highlight).map((part) => part.trim().split(/\s+/).filter(Boolean));
+  // Punctuation straight after the highlight (no space) rides along unlit, so it can't wrap or gap.
+  const tail = /^[^\s\w]+$/.test(after[0] ?? "") && !/^\s/.test(headline.split(highlight)[1]) ? after.shift() : "";
   const words = [
-    ...before.map((w) => ({ w, lit: false })),
-    { w: highlight, lit: true },
-    ...after.map((w) => ({ w, lit: false })),
+    ...before.map((w) => ({ w, lit: false, tail: "" })),
+    { w: highlight, lit: true, tail },
+    ...after.map((w) => ({ w, lit: false, tail: "" })),
   ];
 
   return new ImageResponse(
@@ -52,28 +54,26 @@ export default async function Image() {
             letterSpacing: -2.2,
           }}
         >
-          {words.map(({ w, lit }) => (
-            <span
-              key={w}
-              style={
-                lit
-                  ? {
-                      backgroundColor: og.accent,
-                      color: og.accentContrast,
-                      padding: "0 12px",
-                      margin: "0 -4px",
-                      borderRadius: 10,
-                    }
-                  : {}
-              }
-            >
-              {w}
+          {words.map(({ w, lit, tail }) => (
+            <span key={w} style={{ display: "flex" }}>
+              <span
+                style={
+                  lit
+                    ? {
+                        backgroundColor: og.accent,
+                        color: og.accentContrast,
+                        padding: "0 12px",
+                        margin: "0 -4px",
+                        borderRadius: 10,
+                      }
+                    : {}
+                }
+              >
+                {w}
+              </span>
+              {tail ? <span style={{ marginLeft: 6 }}>{tail}</span> : null}
             </span>
           ))}
-        </div>
-
-        <div style={{ display: "flex", marginTop: 28, fontSize: 28, color: og.muted }}>
-          {site.hero.subline}
         </div>
 
         <div

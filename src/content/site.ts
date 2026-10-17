@@ -42,18 +42,17 @@ export const site = {
   calLink: calUrl(process.env.NEXT_PUBLIC_CAL_LINK),
 
   seo: {
-    title: "Jonas Chukwuemeka | Founder and full-stack developer in Lagos",
+    title: "Jonas Chukwuemeka | Founder and full-stack developer",
     description:
-      "I build web apps and online stores for businesses. Founder of Weblanda, full-stack developer and biologist growing into data engineering.",
+      "I help founders and businesses turn ideas into launched products. Web apps and online stores, built end to end.",
   },
 
   hero: {
-    headline: "I build web apps and online stores for businesses.",
+    headline: "I help founders and businesses turn ideas into launched products.",
     // Words in the headline that get the lime highlight. Must appear in `headline` exactly.
-    highlight: "online stores",
-    subline: "Founder of Weblanda. Biologist in tech.",
+    highlight: "launched products",
     supporting:
-      "I build end to end, from the first product decision to the database, the checkout and the payment that lands in your account. My training as a biologist shapes how I work with data: measured carefully, tested properly and understood before it ships.",
+      "Web apps and online stores, built end to end, from the first product decision to the payment that lands in your account.",
     primaryCta: { label: "See my work", target: "work" },
     secondaryCta: { label: "Get in touch", target: "contact" },
   },
