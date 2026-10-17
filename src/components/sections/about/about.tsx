@@ -7,8 +7,6 @@ import { site } from "@/content/site";
 import { AboutPhoto } from "./about-photo";
 
 export function About() {
-  const [lead, ...rest] = site.about.paragraphs;
-
   return (
     <section id="about" aria-labelledby="about-title" className="border-t border-border py-24 md:py-32">
       <div className="container-page">
@@ -25,13 +23,8 @@ export function About() {
           </Reveal>
 
           <div>
-            <Reveal>
-              <p className="font-display text-2xl leading-snug font-semibold tracking-tight text-fg sm:text-3xl">
-                {lead}
-              </p>
-            </Reveal>
-            <div className="mt-6 space-y-5">
-              {rest.map((p) => (
+            <div className="space-y-5">
+              {site.about.paragraphs.map((p) => (
                 <Reveal key={p}>
                   <p className="text-lg leading-relaxed text-muted">{p}</p>
                 </Reveal>

@@ -59,7 +59,6 @@ export const site = {
 
   about: {
     paragraphs: [
-      "I build software that helps businesses work better. I'm the founder of Weblanda, an e-commerce platform for Nigerian small businesses, and I also build custom web apps for businesses that need something made from scratch.",
       "My background is in biology. I hold a degree from FUTO Owerri and I'm a co-author on a peer-reviewed research publication. That training shapes how I build: clean data, careful testing, and understanding how things actually work before I call them done.",
       "I'm growing my skills in data engineering, with a strong interest in biological and health data. I use AI tools to build faster, and I make sure I understand every part of what I ship.",
     ],
