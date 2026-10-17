@@ -17,24 +17,34 @@ export function HeroHeadline({ text, highlight }: { text: string; highlight: str
   const marked = split(highlight);
   const rest = text.slice(start + highlight.length);
   const after = split(rest);
+  // Punctuation right after the highlight ("products.") stays on its line instead of wrapping alone.
+  const tail = /^\S/.test(rest) ? after.shift() : undefined;
   const sweepAt = FIRST_DELAY + (before.length + marked.length) * WORD_STEP + 0.3;
 
   return (
     <>
       <Words list={before} offset={0} />{" "}
-      <span
-        className="relative isolate inline-block whitespace-nowrap"
-        style={{ animation: `ink 0.4s ease-out ${sweepAt + 0.25}s both` }}
-      >
+      <span className="whitespace-nowrap">
         <span
-          aria-hidden
-          className="absolute -inset-x-[0.1em] top-[0.06em] bottom-[0.1em] -z-10 origin-left rounded-[0.1em] bg-accent"
-          style={{ animation: `highlight-sweep 0.9s var(--ease-out-expo) ${sweepAt}s both` }}
-        />
-        <Words list={marked} offset={before.length} />
+          className="relative isolate inline-block"
+          style={{ animation: `ink 0.4s ease-out ${sweepAt + 0.25}s both` }}
+        >
+          <span
+            aria-hidden
+            className="absolute -inset-x-[0.1em] top-[0.06em] bottom-[0.1em] -z-10 origin-left rounded-[0.1em] bg-accent"
+            style={{ animation: `highlight-sweep 0.9s var(--ease-out-expo) ${sweepAt}s both` }}
+          />
+          <Words list={marked} offset={before.length} />
+        </span>
+        {/* Clears the highlight box, which reaches 0.1em past the last word. */}
+        {tail && (
+          <span className="ml-[0.1em]">
+            <Words list={[tail]} offset={before.length + marked.length} />
+          </span>
+        )}
       </span>
-      {/^\s/.test(rest) ? " " : null}
-      <Words list={after} offset={before.length + marked.length} />
+      {after.length > 0 && " "}
+      <Words list={after} offset={before.length + marked.length + (tail ? 1 : 0)} />
     </>
   );
 }

@@ -14,7 +14,7 @@ export function Hero() {
       <HeroBackground />
 
       <div className="container-page grid items-center gap-14 pt-10 pb-20 sm:pt-14 lg:min-h-[calc(100dvh-4.5rem)] lg:grid-cols-[1.25fr_0.75fr] lg:gap-10 lg:py-16">
-        <div>
+        <div className="@container">
           <AvailabilityBadge />
 
           <h1 id="hero-title" className="font-display text-hero font-extrabold text-fg">

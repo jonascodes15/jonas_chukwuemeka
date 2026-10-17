@@ -88,8 +88,9 @@
   --text-section: clamp(2.5rem, 6.5vw, 5.25rem);
   --text-section--line-height: 0.92;
   --text-section--letter-spacing: -0.035em;
-  /* Hero headline: a full sentence, so smaller than --text-display. */
-  --text-hero: clamp(2.6rem, 6.4vw, 5.5rem);
+  /* Hero headline: a full sentence, so smaller than --text-display. Sized to its column
+     (cqi, the hero's text column is a container) so the unbroken highlight always fits. */
+  --text-hero: clamp(1.75rem, 8.4cqi, 4.25rem);
   --text-hero--line-height: 0.98;
   --text-hero--letter-spacing: -0.04em;
 
