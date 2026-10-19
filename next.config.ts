@@ -9,16 +9,18 @@ const isDev = process.env.NODE_ENV === "development";
  * - Cal.com: the booking pop-up's script, its iframe and the requests it makes
  * - va.vercel-scripts.com: Vercel Analytics and Speed Insights in development (on Vercel they
  *   load from this site's own /_vercel path)
+ * - YouTube (privacy-enhanced youtube-nocookie.com): videos embedded in blog posts
+ * - Images over https from any host: blog posts can show an image by its address
  * Adding another embed or script means adding its origin here.
  */
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://app.cal.com https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://app.cal.com https://cal.com",
+  "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "connect-src 'self' https://app.cal.com https://va.vercel-scripts.com",
-  "frame-src https://app.cal.com https://cal.com",
+  "frame-src https://app.cal.com https://cal.com https://www.youtube-nocookie.com",
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   "object-src 'none'",

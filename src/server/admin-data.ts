@@ -6,7 +6,7 @@ import { lagosDay } from "./privacy";
 
 /** Read queries for the admin dashboard. Days are counted in Lagos time. */
 
-const { enquiries, subscribers, newsletterIssues, chatLogs, bookings } = schema;
+const { enquiries, subscribers, newsletterIssues, chatLogs, bookings, posts } = schema;
 
 const since = (days: number) => sql`now() - make_interval(days => ${days})`;
 
@@ -182,6 +182,85 @@ export async function bookCallClicks(db: Db, days: number): Promise<TopRow[]> {
     where type = 'click' and label like '%book-call' and created_at >= ${since(days)}
     group by label order by count desc`);
   return rows;
+}
+
+// --- Blog -------------------------------------------------------------------
+
+export type PostFilter = "all" | "published" | "scheduled" | "draft";
+
+/** Post list for /admin/blog, without bodies. "published" means live now; "scheduled" is due later. */
+export function listPosts(db: Db, filter: PostFilter, q: string) {
+  const status =
+    filter === "draft"
+      ? eq(posts.status, "draft")
+      : filter === "published"
+        ? and(eq(posts.status, "published"), sql`${posts.publishedAt} <= now()`)
+        : filter === "scheduled"
+          ? and(eq(posts.status, "published"), sql`${posts.publishedAt} > now()`)
+          : undefined;
+  const search = q ? sql`(${posts.title} ilike ${`%${q}%`} or ${posts.slug} ilike ${`%${q}%`})` : undefined;
+  return db
+    .select({
+      id: posts.id,
+      slug: posts.slug,
+      title: posts.title,
+      excerpt: posts.excerpt,
+      status: posts.status,
+      publishedAt: posts.publishedAt,
+      updatedAt: posts.updatedAt,
+      tags: posts.tags,
+      featured: posts.featured,
+      coverImage: posts.coverImage,
+      readingMinutes: posts.readingMinutes,
+      wordCount: posts.wordCount,
+    })
+    .from(posts)
+    .where(and(status, search))
+    .orderBy(desc(sql`coalesce(${posts.publishedAt}, ${posts.updatedAt})`))
+    .limit(300);
+}
+
+export async function postCounts(db: Db): Promise<Record<PostFilter, number>> {
+  const { rows } = await db.execute<{ draft: number; published: number; scheduled: number; all: number }>(sql`
+    select count(*) filter (where status = 'draft')::int as draft,
+           count(*) filter (where status = 'published' and published_at <= now())::int as published,
+           count(*) filter (where status = 'published' and published_at > now())::int as scheduled,
+           count(*)::int as "all"
+    from posts`);
+  return rows[0] ?? { draft: 0, published: 0, scheduled: 0, all: 0 };
+}
+
+export function getPost(db: Db, id: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return Promise.resolve(null);
+  return db
+    .select()
+    .from(posts)
+    .where(eq(posts.id, id))
+    .limit(1)
+    .then((r) => r[0] ?? null);
+}
+
+/** Page views per post slug: in the last `days` days and all time, from the first-party analytics. */
+export async function postViews(db: Db, days: number) {
+  const { rows } = await db.execute<{ slug: string; recent: number; total: number }>(sql`
+    select substring(path from 7) as slug,
+           count(*) filter (where created_at >= ${since(days)})::int as recent,
+           count(*)::int as total
+    from events
+    where type = 'pageview' and path like '/blog/%'
+    group by 1`);
+  return new Map(rows.map((r) => [r.slug, { recent: r.recent, total: r.total }]));
+}
+
+/** Which posts use each image, by searching bodies and covers for its id. */
+export async function mediaUsage(db: Db) {
+  const { rows } = await db.execute<{ id: string; title: string; post_id: string }>(sql`
+    select m.id, p.title, p.id as post_id
+    from media m
+    join posts p on p.content::text like '%' || m.id::text || '%' or p.cover_image like '%' || m.id::text || '%'`);
+  const map = new Map<string, { id: string; title: string }[]>();
+  for (const r of rows) map.set(r.id, [...(map.get(r.id) ?? []), { id: r.post_id, title: r.title }]);
+  return map;
 }
 
 export function listBookings(db: Db, upcoming: boolean) {

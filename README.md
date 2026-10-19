@@ -6,12 +6,13 @@ Live at **https://jonas-chukwuemeka.vercel.app** (deployed on Vercel). The plann
 
 ## What's in it
 
-- **Homepage:** hero, tech strip, work (Weblanda, its stores, Formtified), data lab, experience timeline, about, newsletter and contact.
+- **Homepage:** hero, tech strip, work (Weblanda, its stores, Formtified), data lab, experience timeline, about, latest blog posts, newsletter and contact.
 - **Case studies** at `/work/[slug]`, one per project, with a screenshot gallery and lightbox.
 - **Contact:** a form that saves enquiries and emails them, a Cal.com booking pop-up, WhatsApp, and an "Ask Jay" FAQ chat (pre-written answers, no AI).
+- **Blog** at `/blog`: posts written in the dashboard with a rich text editor (headings, links, images, code with syntax highlighting, YouTube embeds), tag filters, table of contents, share links, related posts, an RSS feed at `/blog/rss.xml`, and drafts, scheduling and previews.
 - **Newsletter** with double opt-in and one-click unsubscribe.
-- **Dashboard** at `/admin`: first-party analytics, enquiries, subscribers, newsletter sending, chat logs, bookings, CV upload and settings.
-- **SEO:** metadata, generated share images, `sitemap.xml`, `robots.txt`, JSON-LD (`Person`, `WebSite`, one `CreativeWork` per case study) and a web app manifest.
+- **Dashboard** at `/admin`: first-party analytics, enquiries, blog posts and media library, subscribers, newsletter sending, chat logs, bookings, CV upload and settings.
+- **SEO:** metadata, generated share images, `sitemap.xml`, `robots.txt`, JSON-LD (`Person`, `WebSite`, one `CreativeWork` per case study, `Blog`, and `BlogPosting` with breadcrumbs per post) and a web app manifest.
 
 ## Stack
 
@@ -133,7 +134,11 @@ Rules for site copy:
 - Only real, checkable facts and numbers. If something isn't confirmed, leave a `// TODO:` comment instead of guessing.
 - No em dashes, and no "Hire me" or "Book a session" wording.
 
-The availability label in the hero and chat, and the downloadable CV, are changed from the dashboard rather than in code.
+The availability label in the hero and chat, the downloadable CV and blog posts are changed from the dashboard rather than in code. The copy around the blog (headings, empty state, author line) is under `blog` in `site.ts`.
+
+### Writing a blog post
+
+Go to `/admin/blog` and choose **New post**. Drafts save themselves after a pause in typing; `Ctrl+S` saves too. Paste or drop images straight into the text, or use the image button for the media library or a link. Select text for quick formatting, or press `Ctrl+K` for a link (the dialog suggests pages on this site). Set a future publish date to schedule a post: it goes live within the hour after that time. **Preview** shows a draft exactly as readers will see it. Uploaded images are resized, stripped of location data and stored as WebP in the database, so no storage service is needed.
 
 ### Adding a project or case study
 
@@ -155,10 +160,11 @@ The first screenshot is the cover image. Don't commit the full-size sources.
 ```
 src/
   app/
-    (site)/          Public pages: homepage, /work/[slug] case studies, newsletter pages
+    (site)/          Public pages: homepage, /work/[slug] case studies, /blog, newsletter pages
     admin/           Dashboard (protected by src/proxy.ts)
     api/             Analytics beacon, newsletter unsubscribe, Cal.com webhook
     cv/              Serves the uploaded CV, or the bundled one
+    media/           Serves blog images uploaded in the dashboard
     opengraph-image.tsx, sitemap.ts, robots.ts, manifest.ts
   components/
     layout/          Nav, footer, logo, in-page section links

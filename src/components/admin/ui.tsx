@@ -210,6 +210,9 @@ export function StatusPill({ status }: { status: string }) {
     archived: "bg-surface-2 text-muted",
     unsubscribed: "bg-surface-2 text-muted",
     cancelled: "bg-surface-2 text-muted",
+    published: "bg-accent-glow text-accent-ink",
+    scheduled: "bg-surface-2 text-fg",
+    draft: "bg-surface-2 text-muted",
   };
   return (
     <span

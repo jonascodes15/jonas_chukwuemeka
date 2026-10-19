@@ -15,6 +15,13 @@
       "when": 1791825520804,
       "tag": "0001_files",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792401626323,
+      "tag": "0002_blog",
+      "breakpoints": true
     }
   ]
 }

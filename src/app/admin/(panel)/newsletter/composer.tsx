@@ -11,7 +11,16 @@ import { cn } from "@/lib/utils";
  * Submits manually (not through the form's action prop) so the draft survives a test send.
  * The form is only cleared after a real send succeeds.
  */
-export function Composer({ recipients }: { recipients: number }) {
+export function Composer({
+  recipients,
+  defaultSubject,
+  defaultBody,
+}: {
+  recipients: number;
+  /** Prefilled when arriving from a blog post's "Email subscribers" link. */
+  defaultSubject?: string;
+  defaultBody?: string;
+}) {
   const [state, action, pending] = useActionState<NewsletterState, FormData>(sendNewsletter, {
     status: "idle",
   });
@@ -46,14 +55,28 @@ export function Composer({ recipients }: { recipients: number }) {
   return (
     <form ref={formRef} onSubmit={onSubmit} className="flex flex-col gap-5">
       <Field id="nl-subject" label="Subject">
-        <input id="nl-subject" name="subject" required maxLength={150} className={inputClasses} />
+        <input
+          id="nl-subject"
+          name="subject"
+          required
+          maxLength={150}
+          defaultValue={defaultSubject}
+          className={inputClasses}
+        />
       </Field>
       <Field
         id="nl-body"
         label="Message"
         hint="Plain text. Leave a blank line between paragraphs. Links become clickable. An unsubscribe link is added automatically."
       >
-        <textarea id="nl-body" name="body" rows={14} required className={cn(inputClasses, "resize-y")} />
+        <textarea
+          id="nl-body"
+          name="body"
+          rows={14}
+          required
+          defaultValue={defaultBody}
+          className={cn(inputClasses, "resize-y")}
+        />
       </Field>
 
       <div className="flex flex-wrap items-center gap-3">

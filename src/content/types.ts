@@ -18,6 +18,8 @@ export interface NavLink {
   label: string;
   /** Section id on the homepage, without the "#". */
   id: string;
+  /** Set for links to a page of their own (e.g. "/blog") instead of a homepage section. */
+  href?: string;
 }
 
 export interface ProjectLink {

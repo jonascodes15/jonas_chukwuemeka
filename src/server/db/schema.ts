@@ -132,6 +132,60 @@ export const chatLogs = pgTable(
   (t) => [index("chat_logs_created_idx").on(t.createdAt)],
 );
 
+/**
+ * Blog posts, written in /admin/blog. `content` is the editor's document (Tiptap JSON), rendered
+ * on the server by src/components/blog/post-body.tsx. A post is public when its status is
+ * "published" and `publishedAt` has passed, so a future date schedules it.
+ */
+export const posts = pgTable(
+  "posts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: createdAt(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    excerpt: text("excerpt").notNull().default(""),
+    content: jsonb("content").notNull(),
+    coverImage: text("cover_image"),
+    coverAlt: text("cover_alt"),
+    coverWidth: integer("cover_width"),
+    coverHeight: integer("cover_height"),
+    tags: jsonb("tags").$type<string[]>().notNull().default([]),
+    /** draft | published */
+    status: text("status").notNull().default("draft"),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    featured: boolean("featured").notNull().default(false),
+    seoTitle: text("seo_title"),
+    seoDescription: text("seo_description"),
+    /** Set when the post first appeared elsewhere, so search engines credit the original. */
+    canonicalUrl: text("canonical_url"),
+    wordCount: integer("word_count").notNull().default(0),
+    readingMinutes: integer("reading_minutes").notNull().default(1),
+  },
+  (t) => [index("posts_status_published_idx").on(t.status, t.publishedAt)],
+);
+
+/**
+ * Images uploaded for the blog, served from /media/<id>.<ext>. Stored as base64 like `files`,
+ * after being resized and converted to WebP on upload, so each one stays small.
+ */
+export const media = pgTable(
+  "media",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: createdAt(),
+    fileName: text("file_name").notNull(),
+    contentType: text("content_type").notNull(),
+    size: integer("size").notNull(),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    alt: text("alt").notNull().default(""),
+    data: text("data").notNull(),
+  },
+  (t) => [index("media_created_idx").on(t.createdAt)],
+);
+
 /** Cal.com bookings, received by webhook (from Phase 5). */
 export const bookings = pgTable(
   "bookings",

@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-import { navLinks, site } from "@/content/site";
+import { navHref, navLinks, site } from "@/content/site";
 import { activeSocials } from "@/content/socials";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { BackToTop } from "./back-to-top";
@@ -43,7 +43,7 @@ export function Footer() {
             <ul className="mt-4 grid gap-2.5">
               {navLinks.map((l) => (
                 <li key={l.id}>
-                  <Link href={`/#${l.id}`} className="text-fg/85 transition-colors hover:text-accent-ink">
+                  <Link href={navHref(l)} className="text-fg/85 transition-colors hover:text-accent-ink">
                     {l.label}
                   </Link>
                 </li>

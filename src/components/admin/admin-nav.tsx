@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Mail,
   MessageCircleQuestion,
+  PenLine,
   Settings,
   Users,
 } from "lucide-react";
@@ -20,6 +21,7 @@ const items = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/enquiries", label: "Enquiries", icon: Inbox, badge: "enquiries" },
+  { href: "/admin/blog", label: "Blog", icon: PenLine },
   { href: "/admin/subscribers", label: "Subscribers", icon: Users },
   { href: "/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/admin/chats", label: "Chat logs", icon: MessageCircleQuestion },

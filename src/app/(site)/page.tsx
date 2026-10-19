@@ -1,6 +1,7 @@
 import { PageTransition } from "@/components/motion/page-transition";
 import { homeSchema, JsonLd } from "@/components/seo/json-ld";
 import { About } from "@/components/sections/about/about";
+import { LatestPosts } from "@/components/sections/blog/latest-posts";
 import { Contact } from "@/components/sections/contact/contact";
 import { DataLab } from "@/components/sections/data/data-lab";
 import { Experience } from "@/components/sections/experience/experience";
@@ -21,6 +22,7 @@ export default function HomePage() {
         <DataLab />
         <Experience />
         <About />
+        <LatestPosts />
         <Newsletter heading={site.newsletter.heading} body={site.newsletter.body} />
         <Contact />
       </div>

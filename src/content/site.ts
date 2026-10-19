@@ -81,6 +81,28 @@ export const site = {
     ],
   },
 
+  // Posts themselves are written in the dashboard (/admin/blog); this is the copy around them.
+  blog: {
+    eyebrow: "Blog",
+    lead: "Notes from",
+    trail: "the build",
+    description:
+      "Writing on building products for the web, the tools behind them, and what I'm learning in data engineering.",
+    seoDescription:
+      "Articles by Jonas Chukwuemeka on building web apps and online stores, full-stack development and data engineering.",
+    home: {
+      lead: "Latest",
+      trail: "Writing",
+      description: "Notes on what I'm building, how it works, and what I learn along the way.",
+    },
+    empty: {
+      title: "The first posts are on the way.",
+      body: "Subscribe below and the first one will land in your inbox.",
+    },
+    authorBio:
+      "Full-stack developer and founder of Weblanda. I build web apps and online stores from Lagos, and I'm growing into data engineering.",
+  },
+
   newsletter: {
     heading: "Notes from the build",
     body: "Occasional notes on what I'm building and learning. No spam.",
@@ -104,8 +126,13 @@ export const navLinks: NavLink[] = [
   { label: "Data", id: "data" },
   { label: "Experience", id: "experience" },
   { label: "About", id: "about" },
+  // A page of its own; the homepage's latest-posts section has the same id for the active state.
+  { label: "Blog", id: "blog", href: "/blog" },
   { label: "Contact", id: "contact" },
 ];
+
+/** Where a nav link goes: its own page, or its section on the homepage. */
+export const navHref = (link: NavLink) => link.href ?? `/#${link.id}`;
 
 export function whatsappHref(message: string = site.whatsapp.greeting) {
   return `https://wa.me/${site.whatsapp.number}?text=${encodeURIComponent(message)}`;

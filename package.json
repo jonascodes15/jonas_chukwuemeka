@@ -19,6 +19,16 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
+    "@tiptap/core": "^3.32.0",
+    "@tiptap/extension-highlight": "^3.32.0",
+    "@tiptap/extension-image": "^3.32.0",
+    "@tiptap/extension-list": "^3.32.0",
+    "@tiptap/extension-text-align": "^3.32.0",
+    "@tiptap/extension-youtube": "^3.32.0",
+    "@tiptap/extensions": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/react": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "bcryptjs": "^3.0.3",
@@ -34,6 +44,8 @@
     "recharts": "^3.10.1",
     "resend": "^6.32.1",
     "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
+    "shiki": "^4.5.0",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5"
   },
@@ -47,7 +59,6 @@
     "eslint-config-next": "16.4.0",
     "prettier": "^3.9.9",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

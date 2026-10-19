@@ -5,7 +5,7 @@ import { CalendarDays, Download, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { navLinks, site } from "@/content/site";
+import { navHref, navLinks, site } from "@/content/site";
 import { activeSocials } from "@/content/socials";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -44,7 +44,12 @@ function useActiveSection(enabled: boolean) {
 export function Nav() {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const active = useActiveSection(isHome);
+  const section = useActiveSection(isHome);
+  // Away from the homepage, a link to a page of its own (the blog) is active on that page.
+  const active = isHome
+    ? section
+    : (navLinks.find((l) => l.href && (pathname === l.href || pathname.startsWith(`${l.href}/`)))?.id ??
+      null);
 
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -94,11 +99,11 @@ export function Nav() {
                 return (
                   <li key={link.id} className="relative">
                     <Link
-                      href={`/#${link.id}`}
+                      href={navHref(link)}
                       data-track={`nav:${link.id}`}
-                      aria-current={isActive ? "true" : undefined}
+                      aria-current={isActive ? (link.href ? "page" : "true") : undefined}
                       className={cn(
-                        "relative z-10 block rounded-pill px-4 py-2 text-sm font-medium transition-colors",
+                        "relative z-10 block rounded-pill px-3.5 py-2 text-sm font-medium transition-colors xl:px-4",
                         isActive ? "text-fg" : "text-muted hover:text-fg",
                       )}
                     >
@@ -263,8 +268,9 @@ function MobileMenu({
                   }}
                 >
                   <Link
-                    href={`/#${link.id}`}
+                    href={navHref(link)}
                     data-track={`menu:${link.id}`}
+                    aria-current={active === link.id && link.href ? "page" : undefined}
                     onClick={onClose}
                     className={cn(
                       "flex items-baseline gap-4 py-3 font-display text-4xl font-extrabold tracking-tight uppercase transition-colors",
