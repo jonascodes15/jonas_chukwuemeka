@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { PostEditor } from "@/components/admin/blog/post-editor";
+import { NewPostEditor } from "@/components/admin/blog/post-editor";
 import { newPost } from "@/components/admin/blog/types";
 import { PageHeader, PageSkeleton, SetupNotice } from "@/components/admin/ui";
 import { requireAdmin } from "@/server/auth";
@@ -29,5 +29,5 @@ async function NewPost() {
     );
   }
   const extras = await editorExtras(db);
-  return <PostEditor initial={newPost} siteHost={siteHost()} {...extras} />;
+  return <NewPostEditor initial={newPost} siteHost={siteHost()} {...extras} />;
 }

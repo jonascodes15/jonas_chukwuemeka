@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq, ne, sql } from "drizzle-orm";
 import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -54,6 +54,8 @@ const postSchema = z.object({
   seoTitle: optionalText(120),
   seoDescription: optionalText(320),
   canonicalUrl: optionalText(1000),
+  /** The `updatedAt` of the version the editor started from, so a stale editor can't overwrite newer work. */
+  expectedUpdatedAt: z.iso.datetime({ offset: true }).nullish(),
 });
 
 export type PostInput = z.input<typeof postSchema>;
@@ -68,7 +70,7 @@ export type SaveResult =
       updatedAt: string;
       message: string;
     }
-  | { ok: false; message: string; field?: string };
+  | { ok: false; message: string; field?: string; conflict?: true };
 
 const isHttpUrl = (v: string) => {
   try {
@@ -169,13 +171,30 @@ export async function savePost(input: PostInput): Promise<SaveResult> {
   let id = v.id ?? null;
   try {
     if (id) {
+      // Only overwrite the version this editor last saw. If the post changed since (another tab,
+      // or an editor screen kept from earlier), refuse instead of silently replacing that work.
+      const unchanged = v.expectedUpdatedAt
+        ? sql`date_trunc('milliseconds', ${schema.posts.updatedAt}) = ${v.expectedUpdatedAt}::timestamptz`
+        : undefined;
       const updated = await d
         .update(schema.posts)
         .set(row)
-        .where(eq(schema.posts.id, id))
+        .where(and(eq(schema.posts.id, id), unchanged))
         .returning({ id: schema.posts.id });
-      if (!updated.length)
-        return { ok: false, message: "This post no longer exists. It may have been deleted." };
+      if (!updated.length) {
+        const [exists] = await d
+          .select({ id: schema.posts.id })
+          .from(schema.posts)
+          .where(eq(schema.posts.id, id))
+          .limit(1);
+        if (!exists) return { ok: false, message: "This post no longer exists. It may have been deleted." };
+        return {
+          ok: false,
+          conflict: true,
+          message:
+            "Not saved: this post was changed somewhere else since this screen loaded (another tab, perhaps). Copy anything you want to keep, then reload the page to get the latest version.",
+        };
+      }
     } else {
       const [created] = await d.insert(schema.posts).values(row).returning({ id: schema.posts.id });
       id = created.id;

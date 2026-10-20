@@ -19,7 +19,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type ComponentProps, type KeyboardEvent, type ReactNode } from "react";
 import { ConfirmSubmit } from "@/components/admin/confirm-submit";
 import { StatusPill } from "@/components/admin/ui";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,17 @@ const fromLocalInput = (v: string) => (v ? new Date(v).toISOString() : null);
 const AUTOSAVE_MS = 20_000;
 
 type Notice = { tone: "success" | "error"; text: string } | null;
+
+/**
+ * The editor for /admin/blog/new. With Cache Components, Next.js keeps a page's state when you
+ * leave it, so a second visit to "New post" brought back the previous editor, still holding the
+ * id of the post just published, and saving there replaced that post. Keying on bfcacheId gives
+ * every visit through a link a fresh, empty editor; browser back/forward still restores it.
+ */
+export function NewPostEditor(props: ComponentProps<typeof PostEditor>) {
+  const { bfcacheId } = useRouter();
+  return <PostEditor key={bfcacheId} {...props} />;
+}
 
 export function PostEditor({
   initial,
@@ -105,6 +117,7 @@ export function PostEditor({
       seoTitle: post.seoTitle,
       seoDescription: post.seoDescription,
       canonicalUrl: post.canonicalUrl,
+      expectedUpdatedAt: post.id ? post.updatedAt : null,
     };
     let res: Awaited<ReturnType<typeof savePost>>;
     try {
@@ -115,7 +128,8 @@ export function PostEditor({
     setSaving(null);
 
     if (!res.ok) {
-      if (!auto) {
+      // A conflict always shows, even from an autosave: it means saving has stopped.
+      if (!auto || res.conflict) {
         setNotice({ tone: "error", text: res.message });
         setBadField(res.field ?? null);
       }
