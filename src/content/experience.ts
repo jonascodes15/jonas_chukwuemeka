@@ -20,6 +20,7 @@ export const experience: ExperienceItem[] = [
     details: [
       "Built the full platform solo on Next.js, Supabase (PostgreSQL) and Vercel, with each seller's store running on its own subdomain.",
       "Integrated Paystack subaccounts so sellers are paid directly into their own accounts, with no platform cut on sales.",
+      "Shipped AI product listing from photos: up to 10 photos become draft products at once, with price, sizes and stock always left to the seller, plus a fallback model and daily limits per plan.",
       "Onboarded the first sellers across fashion, handmade accessories, furniture and gadgets, and set up their storefronts.",
       "Registered the company, Weblanda Technologies Ltd, and handled brand, content and distribution end to end.",
     ],

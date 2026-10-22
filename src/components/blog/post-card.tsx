@@ -6,7 +6,11 @@ import { formatPostDateShort, safeImageSrc } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 import type { PostSummary } from "@/server/blog";
 
-/** A post's cover image, or a quiet branded panel when it has none. */
+/**
+ * A post's cover image, or a quiet branded panel when it has none.
+ * Covers often carry their own title text, so the image is never cropped: it is fitted whole
+ * inside the frame, and any space left over is filled with a blurred copy of itself.
+ */
 export function PostCover({
   post,
   sizes,
@@ -22,24 +26,46 @@ export function PostCover({
   return (
     <div className={cn("relative isolate overflow-hidden bg-surface-2", className)}>
       {src ? (
-        src.startsWith("/media/") ? (
-          <Image
-            src={src}
-            alt={post.coverAlt ?? ""}
-            fill
-            sizes={sizes}
-            priority={priority}
-            className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.03]"
-          />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element -- linked from another site, size unknown.
-          <img
-            src={src}
-            alt={post.coverAlt ?? ""}
-            loading={priority ? "eager" : "lazy"}
-            className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.03]"
-          />
-        )
+        <div className="absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-[1.03]">
+          {src.startsWith("/media/") ? (
+            <>
+              <Image
+                src={src}
+                alt=""
+                aria-hidden
+                fill
+                sizes={sizes}
+                className="scale-110 object-cover opacity-80 blur-2xl"
+              />
+              <Image
+                src={src}
+                alt={post.coverAlt ?? ""}
+                fill
+                sizes={sizes}
+                priority={priority}
+                className="object-contain"
+              />
+            </>
+          ) : (
+            <>
+              {/* eslint-disable @next/next/no-img-element -- linked from another site, size unknown. */}
+              <img
+                src={src}
+                alt=""
+                aria-hidden
+                loading={priority ? "eager" : "lazy"}
+                className="absolute inset-0 size-full scale-110 object-cover opacity-80 blur-2xl"
+              />
+              <img
+                src={src}
+                alt={post.coverAlt ?? ""}
+                loading={priority ? "eager" : "lazy"}
+                className="absolute inset-0 size-full object-contain"
+              />
+              {/* eslint-enable @next/next/no-img-element */}
+            </>
+          )}
+        </div>
       ) : (
         <div aria-hidden className="absolute inset-0 bg-lab">
           <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_right,black_15%,transparent_70%)]" />
@@ -152,7 +178,7 @@ export function PostCard({
               ? "(min-width: 1024px) 680px, 100vw"
               : "(min-width: 1024px) 420px, (min-width: 640px) 50vw, 100vw"
           }
-          className={cn("aspect-[16/10] w-full", feature && "lg:aspect-auto lg:h-full lg:min-h-[26rem]")}
+          className={cn("aspect-[2/1] w-full", feature && "lg:aspect-auto lg:h-full lg:min-h-[26rem]")}
         />
         <div className={cn("flex flex-1 flex-col p-6", feature && "sm:p-8 lg:p-10")}>
           <Tags tags={post.tags} />

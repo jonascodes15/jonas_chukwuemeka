@@ -126,7 +126,7 @@ export function PostArticle({ post, url }: { post: ArticlePost; url: string }) {
               post={post}
               priority
               sizes="(min-width: 1280px) 1216px, 100vw"
-              className="mx-auto aspect-[2/1] max-w-5xl rounded-card border border-border max-sm:aspect-[16/10]"
+              className="mx-auto aspect-[2/1] max-w-5xl rounded-card border border-border"
             />
           </Enter>
         </div>

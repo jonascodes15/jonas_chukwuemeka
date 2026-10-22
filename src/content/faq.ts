@@ -67,7 +67,7 @@ export const faq: FaqItem[] = [
     id: "weblanda",
     question: "What is Weblanda?",
     answer:
-      "Weblanda is the e-commerce platform I founded and built. It lets Nigerian small businesses run their own online store, with checkout, delivery and a seller dashboard, all from a phone. Sellers are paid directly into their own Paystack subaccounts, and Weblanda takes no cut of sales.",
+      "Weblanda is the e-commerce platform I founded and built. It lets Nigerian small businesses run their own online store, with checkout, delivery and a seller dashboard, all from a phone. Sellers are paid directly into their own Paystack subaccounts, and Weblanda takes no cut of sales. Sellers can also add products from photos: AI drafts the details, and the seller sets the price.",
     keywords: ["weblanda", "platform", "your company", "startup", "e-commerce", "ecommerce"],
     action: { label: "Read the case study", target: "case-study", slug: "weblanda" },
   },

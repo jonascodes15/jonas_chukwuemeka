@@ -4,7 +4,9 @@ import type { CaseStudy } from "./types";
  * Case-study copy for /work/[slug], keyed by project slug.
  *
  * Sources: Weblanda from the brief, LinkedIn and weblanda.com's own screen captions (its code is
- * private). Every other project from its public GitHub README. Nothing here goes beyond those.
+ * private). Its "Add products from photos with AI" feature (built 21 to 22 October 2026) is from
+ * Jay's own notes on it. Every other project from its public GitHub README. Nothing here goes
+ * beyond those.
  * TODO (Jay): the "What I learned" lines are written in your voice from what each README says.
  * Read them and change anything that doesn't sound like you.
  */
@@ -20,6 +22,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       "A small business that wants to sell online needs more than a catalogue. It needs a checkout that actually takes payment, a way to get orders delivered, and one place to keep track of products, stock and customers.",
       "Weblanda is built for owners who run their business from a phone, so every one of those jobs has to work on a phone screen, not only on a laptop.",
       "Then there is the money. When a customer pays, the seller should be paid, without waiting for a platform to pass the money on and without giving up a share of every sale.",
+      "And a shop is only as useful as its listings. Typing a name and a description for every product on a phone is where sellers stall, so getting from photos to a full shop has to be fast, while the seller stays in control of anything that costs money.",
     ],
     builtIntro:
       "Weblanda gives each business its own online store on its own subdomain, with real checkout, delivery and a seller dashboard. I built the whole platform alone: product, engineering, payments, brand and content.",
@@ -29,8 +32,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         body: "A seller picks a name and the shop is live, free for the first 14 days.",
       },
       {
-        title: "Products from a phone",
-        body: "A photo, a name and a price is all it takes to add a product to the shop.",
+        title: "Products from photos",
+        body: "A seller picks up to 10 product photos and each one becomes a draft with a name, description, suggested category and colours. They check it, add a price and publish, one at a time or all together. A single product can fill its details from its cover photo.",
       },
       {
         title: "Orders, stock and customers",
@@ -52,7 +55,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     howItWorks: [
       {
         title: "The seller sets up",
-        body: "From the dashboard on their phone, the seller names the shop and adds products. The shop goes live on its own subdomain.",
+        body: "From the dashboard on their phone, the seller names the shop and adds products, by hand or from photos. The shop goes live on its own subdomain.",
       },
       {
         title: "Each address finds its store",
@@ -68,7 +71,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     architecture: {
-      cols: 2,
+      cols: 3,
       nodes: [
         {
           id: "seller",
@@ -78,7 +81,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           col: 1,
           row: 1,
         },
-        { id: "shopper", label: "Shopper", detail: "yourshop.weblanda.shop", kind: "serve", col: 2, row: 1 },
+        { id: "shopper", label: "Shopper", detail: "yourshop.weblanda.shop", kind: "serve", col: 3, row: 1 },
         {
           id: "app",
           label: "Next.js on Vercel",
@@ -86,15 +89,16 @@ export const caseStudies: Record<string, CaseStudy> = {
           kind: "compute",
           col: 1,
           row: 2,
-          colSpan: 2,
+          colSpan: 3,
         },
-        { id: "db", label: "Supabase", detail: "PostgreSQL", kind: "store", col: 1, row: 3 },
+        { id: "db", label: "Supabase", detail: "PostgreSQL, Storage", kind: "store", col: 1, row: 3 },
+        { id: "ai", label: "AI provider", detail: "OpenAI-compatible", kind: "compute", col: 2, row: 3 },
         {
           id: "paystack",
           label: "Paystack checkout",
           detail: "Per-seller subaccounts",
           kind: "compute",
-          col: 2,
+          col: 3,
           row: 3,
         },
         {
@@ -102,7 +106,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           label: "Seller's account",
           detail: "Paid directly, no cut",
           kind: "store",
-          col: 2,
+          col: 3,
           row: 4,
         },
       ],
@@ -110,6 +114,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         { from: "seller", to: "app", label: "manage" },
         { from: "shopper", to: "app", label: "browse, buy" },
         { from: "app", to: "db", label: "SQL" },
+        { from: "app", to: "ai", label: "photo fill" },
         { from: "app", to: "paystack", label: "checkout" },
         { from: "paystack", to: "bank", label: "settles" },
       ],
@@ -117,8 +122,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     stackWhy: [
       { tech: "Next.js (App Router)", why: "One app serves every storefront and every seller dashboard." },
       {
-        tech: "Supabase (PostgreSQL)",
-        why: "The database behind every shop's products, orders, stock and customers.",
+        tech: "Supabase (PostgreSQL, Storage)",
+        why: "The database behind every shop's products, orders, stock and customers, with row-level security. Storage holds each shop's product photos in its own folder.",
       },
       {
         tech: "Vercel with wildcard subdomains",
@@ -127,6 +132,22 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         tech: "Paystack subaccounts",
         why: "Each seller has their own subaccount, which is what lets every payment go straight to the seller.",
+      },
+      {
+        tech: "OpenAI-compatible AI API",
+        why: "Not tied to one provider. It runs on Google Gemini's free tier today, with a fallback model that takes over when the main one is slow or overloaded, all inside Vercel's 60-second function limit.",
+      },
+      {
+        tech: "zod",
+        why: "Every AI answer is checked against a schema, which also strips anything the AI shouldn't fill: price, sizes, stock and material.",
+      },
+      {
+        tech: "sharp",
+        why: "Photos are downscaled to 1024px before they go to the model.",
+      },
+      {
+        tech: "Node's built-in test runner",
+        why: "Tests for the schema, the rule that the AI only fills empty fields, and the rule that nothing publishes without a price.",
       },
     ],
     challenges: [
@@ -146,10 +167,28 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Building the business, not just the code",
         body: "Beyond the software, I registered the company as Weblanda Technologies Ltd, onboarded the first sellers across fashion, handmade accessories, furniture and gadgets, and set up their storefronts myself.",
       },
+      {
+        title: "AI that never sets the price",
+        body: "The AI writes from the photo alone, or from the photo plus a name the seller types. It never fills in price, sizes, stock or material, and it only fills empty fields: anything the seller typed, even while the AI was still working, wins. Descriptions are cleaned afterwards (at most four sentences, no claims the photo can't support), and nothing goes live until the seller publishes.",
+      },
+      {
+        title: "Drafts that can't reach a storefront",
+        body: "Drafts live in their own table rather than as a status on the products table, so a storefront query can never show a half-finished product, and drafts never touch stock. Publishing runs one product at a time, so plan product limits and unique product URLs still hold.",
+      },
+      {
+        title: "A batch that survives a bad connection",
+        body: "Each photo runs as separate requests: upload, save as a draft, then AI fill, at most three photos at a time. A failure retries only the step that failed, and once a photo is saved as a draft it survives a closed tab. The server only fetches images from that shop's own storage folder.",
+      },
+      {
+        title: "Daily limits that can't be raced",
+        body: "Each plan has a daily limit per shop: 20 on Hustler, 50 on Builder, 100 on Chairman. A usage row is inserted first and then counted, so two tabs can't both slip past the limit. Failed AI calls don't count, and the day resets at Lagos midnight.",
+      },
     ],
     learned: [
       "Deciding early that sellers are paid directly shaped checkout, payouts and onboarding across the whole platform.",
       "Setting up real sellers' storefronts myself showed me what a seller actually needs from a dashboard, and what they never touch.",
+      "Let AI do the typing and leave anything that costs the seller money to the seller. That line decided what the AI may fill and what it never touches.",
+      "Log every AI call. The latency in the usage log is what traced a production 502 to a typo in the API base URL, and it led to config validation and better failure logging.",
     ],
     galleryNote:
       "Every screen shows a demo shop with demo figures, not a real seller's business. Customer contact details are blurred.",

@@ -507,11 +507,11 @@ export function PostEditor({
                       alt={post.coverAlt ?? ""}
                       fill
                       sizes="352px"
-                      className="object-cover"
+                      className="object-contain"
                     />
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={post.coverImage} alt={post.coverAlt ?? ""} className="size-full object-cover" />
+                    <img src={post.coverImage} alt={post.coverAlt ?? ""} className="size-full object-contain" />
                   )}
                 </div>
                 <input
