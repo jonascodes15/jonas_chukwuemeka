@@ -121,30 +121,6 @@ export const projects: Project[] = [
         "Every customer, what they've spent and when they last ordered.",
         "The Customers screen, most valuable customers first",
       ),
-      // TODO (Jay): screenshots for "Add products from photos with AI". Capture them on the demo shop,
-      // run `npm run image` on each, then uncomment. Check width and height against the real captures.
-      // weblandaPhone(
-      //   "screen-ai-bulk",
-      //   "Add products from photos",
-      //   "Pick up to 10 photos. Each one becomes a draft, and you can edit finished cards while the rest are read.",
-      //   "The bulk add page while the progress bar reads the seller's photos",
-      // ),
-      // weblandaPhone(
-      //   "screen-ai-draft",
-      //   "Check it, add a price, publish",
-      //   "The AI fills the name, description, category and colours. The price is always yours to set.",
-      //   "A draft product card with its details filled in, waiting for a price",
-      // ),
-      // {
-      //   dir: "/projects/weblanda",
-      //   name: "homepage-ai-section",
-      //   widths: WEBLANDA_WIDTHS,
-      //   width: 1500,
-      //   height: 950,
-      //   alt: "The Add products with AI section on weblanda.com's homepage",
-      //   caption: "Photos, then reading, then ready for a price.",
-      //   device: "desktop",
-      // },
       {
         dir: "/projects/weblanda",
         name: "analytics-mobile",
