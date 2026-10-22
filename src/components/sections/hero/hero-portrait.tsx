@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, GraduationCap, MapPin } from "lucide-react";
+import { BookOpen, GraduationCap, MapPin, Workflow } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import type { ReactNode } from "react";
@@ -63,6 +63,10 @@ export function HeroPortrait({ name }: { name: string }) {
       <FloatingChip className="bottom-16 -left-2 sm:-left-12" delay={1.2} drift={-5}>
         <BookOpen aria-hidden className="size-4 text-accent-ink" />
         Peer-reviewed co-author
+      </FloatingChip>
+      <FloatingChip className="bottom-12 -right-3 sm:-right-10" delay={1.35} drift={5}>
+        <Workflow aria-hidden className="size-4 text-accent-ink" />
+        Data pipelines
       </FloatingChip>
     </motion.div>
   );
