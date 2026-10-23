@@ -334,13 +334,13 @@ export const caseStudies: Record<string, CaseStudy> = {
   biostreamer: {
     facts: [
       { label: "Type", value: "Hybrid data platform" },
-      { label: "Grounded in", value: "My 2024 co-authored paper" },
+      { label: "Grounded in", value: "A 2024 peer-reviewed group study" },
       { label: "Scale", value: "100 reactors × 37 days" },
       { label: "Code", value: "Public on GitHub" },
     ],
     problem: [
       "A 36-digester anaerobic digestion study, observed daily for 37 days, needs more than 1,300 manual water-displacement readings. Each one is read off a calibrated cylinder and typed into a spreadsheet by hand.",
-      "That logging burden, not the number of digesters, is what limits how large a study a small lab can run. The study BioStreamer is built on is one I co-authored on co-digesting bean and plantain peels, published in GSC Biological and Pharmaceutical Sciences in 2024.",
+      "That logging burden, not the number of digesters, is what limits how large a study a small lab can run. The study BioStreamer is built on was a group project on co-digesting bean and plantain peels. Four of us carried it out under the supervision of Mr Justine Chikezie Nnokwe, and it was published in GSC Biological and Pharmaceutical Sciences in 2024.",
       "BioStreamer asks what that research looks like when collecting and interpreting the data is automated for a fleet an order of magnitude larger, while staying accountable to the published results.",
     ],
     builtIntro:

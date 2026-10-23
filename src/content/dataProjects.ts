@@ -25,9 +25,9 @@ export const dataProjects: DataProject[] = [
     slug: "biostreamer",
     name: "BioStreamer",
     featured: true,
-    tagline: "My own peer-reviewed anaerobic digestion research, turned into a hybrid data platform.",
+    tagline: "A peer-reviewed group study on anaerobic digestion, turned into a hybrid data platform.",
     summary:
-      "BioStreamer models daily bioreactor telemetry (pH, volatile fatty acids, alkalinity and biogas yield) for 100 simulated reactor lines, grounded in the co-digestion study I co-authored. Structured data and research literature flow through separate pipelines and meet in one API.",
+      "BioStreamer models daily bioreactor telemetry (pH, volatile fatty acids, alkalinity and biogas yield) for 100 simulated reactor lines, grounded in a co-digestion study I co-authored as one of a group of four. Structured data and research literature flow through separate pipelines and meet in one API.",
     highlights: [
       "Structured track: telemetry lands as Parquet in MinIO, then loads into PostgreSQL.",
       "Unstructured track: research literature is chunked, embedded and searchable through a RAG layer on Qdrant.",
