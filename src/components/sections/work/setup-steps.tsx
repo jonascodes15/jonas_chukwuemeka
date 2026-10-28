@@ -1,29 +1,40 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  ArrowUpRight,
+  BadgePercent,
+  Camera,
+  Check,
+  Clock,
+  Globe,
+  Link2,
+  MessageCircle,
+  Sparkles,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { ButtonAnchor } from "@/components/ui/button";
+import { BrowserFrame, PhoneFrame } from "@/components/ui/device-frame";
+import type { Screenshot } from "@/content/types";
+import { cn } from "@/lib/utils";
 
 /**
- * Weblanda's "From your phone to a live shop, in five steps" row, lifted out of
- * the Weblanda repo (components/home/SetupSteps.tsx) for the Work section.
+ * Weblanda's "From your phone to a live shop, in five steps" row: the carousel
+ * from weblanda.com's homepage, rebuilt in this site's own design. The original
+ * slides are flat orange-and-cream images; here each slide is a card made from
+ * the site's tokens, with the same words and the same real app screens
+ * (from weblanda/marketing/carousel-5-steps: slides.html for the copy and the
+ * highlight positions, screens/ for the screenshots, which are not retouched).
  *
- * Seven slides (a cover, one per step, a closing "your store is live") in one
- * edge-to-edge strip. The slides were designed to be swiped: the orange circles
- * run across the seams from one slide into the next, so the cards have no gap
- * and only the two ends of the strip are rounded.
+ * Seven cards: a cover, one per step, and a closing "your store is live".
  *
  * Where the screen has room, the section pins and vertical scroll moves the
- * strip sideways, one pixel across per pixel down, so the last slide arrives
+ * strip sideways, one pixel across per pixel down, so the last card arrives
  * exactly as the section releases. Where it does not (short window, reduced
  * motion, or a screen wide enough to show all seven), it becomes an ordinary
  * horizontal scroller driven by the arrows. Nothing is unreachable either way.
- *
- * Differences from the Weblanda original:
- *   - The last slide links to weblanda.com instead of opening the shop-naming
- *     dialog, which does not exist outside the Weblanda app.
- *   - The arrows, counter and focus rings use this site's colour tokens, and
- *     the strip's inner column matches .container-page.
- *   - Image folder, link and nav height are props.
- *   - Heights use `dvh` outright (no `vh` fallback check), like the rest of the site.
  *
  * **Never put this inside anything with `overflow: hidden`, `transform` or
  * `filter`** (a <Reveal> wrapper, a rounded card that clips). It pins with
@@ -32,90 +43,350 @@ import { useEffect, useRef, useState } from "react";
  * Render it outside .container-page too, so the cards slide to the screen edge.
  */
 
-/** Cache-buster for the slides. Bump it whenever they are replaced. */
-const VERSION = "1";
+const DIR = "/projects/weblanda/steps";
 
-/** The widths each slide exists in, as avif and webp. */
-const WIDTHS = [400, 560, 800, 1024];
+/** Every screen is a 390x844 CSS-pixel capture at 3x. */
+const screen = (name: string, alt: string): Screenshot => ({
+  dir: DIR,
+  name,
+  widths: [400, 560],
+  width: 1170,
+  height: 2532,
+  alt,
+  device: "phone",
+});
 
-/** A card is the screen less a peek of the next one on a phone, and 400px above that. */
-const SIZES = "(min-width: 472px) 400px, calc(100vw - 72px)";
+/** A phone is about half a card, and a card is at most 400px wide. */
+const PHONE_SIZES = "(min-width: 472px) 190px, 46vw";
 
-const SLIDES = [
+/** Highlight on a screen, in the screen's own CSS pixels: [x, y, width, height]. */
+type Ring = [number, number, number, number];
+
+interface Step {
+  title: ReactNode;
+  body: ReactNode;
+  shot: Screenshot;
+  ring: Ring;
+  chip: { icon: LucideIcon; text: ReactNode; style: CSSProperties; className?: string };
+}
+
+/**
+ * A chip that starts just inside the card's left padding: the phone is 54% of the card's
+ * content, so the space beside it is 23% of the content, about 43% of the phone.
+ */
+const SIDE = "left-[-38%]";
+
+// Copy, screens and rings are the ones on weblanda.com. Chips sit in % of the phone.
+const STEPS: Step[] = [
   {
-    file: "steps-01-cover",
-    alt: "Your online store in 5 simple steps. No coding. No developer. Just your phone. Two phones show the Vyro shoe store built on Weblanda.",
+    title: "Name your store",
+    body: "Pick a name and get your own link, like yourbrand.weblanda.shop",
+    shot: screen(
+      "step-name",
+      "The Weblanda naming screen with adakicks typed in, which becomes adakicks.weblanda.shop",
+    ),
+    ring: [41, 381, 308, 50],
+    chip: {
+      icon: Link2,
+      text: "adakicks.weblanda.shop",
+      style: { top: "68%" },
+      className: "left-1/2 -translate-x-1/2",
+    },
   },
   {
-    file: "steps-02-step-1",
-    alt: "Step 1, name your store: the Weblanda naming screen with adakicks typed in, which becomes adakicks.weblanda.shop.",
+    title: "Sign up with Google",
+    body: "One tap. No long forms.",
+    shot: screen("step-signup", "The Weblanda sign-up screen with the Continue with Google button"),
+    ring: [25, 225, 340, 44],
+    chip: { icon: Check, text: "One tap", style: { top: "29%" }, className: SIDE },
   },
   {
-    file: "steps-03-step-2",
-    alt: "Step 2, sign up with Google: the Weblanda sign-up screen with the Continue with Google button.",
+    title: "Let AI list your product",
+    body: "Upload a photo. AI writes the name and description. You add price, stock and sizes.",
+    shot: screen(
+      "step-ai",
+      "The add product form after a photo is uploaded, with the name and description written by AI and the price left empty",
+    ),
+    ring: [38, 410, 314, 275],
+    chip: { icon: Sparkles, text: "AI wrote this", style: { top: "60%" }, className: SIDE },
   },
   {
-    file: "steps-04-step-3",
-    alt: "Step 3, let AI list your product: the add product form after a photo is uploaded, with the name and description written by AI and the price left for the seller.",
+    title: "Add the rest at once",
+    body: "Upload many photos together. AI fills them all in.",
+    shot: screen(
+      "step-drafts",
+      "The products list showing drafts made from photos, each waiting for a price",
+    ),
+    ring: [25, 318, 340, 232],
+    chip: {
+      icon: Zap,
+      text: (
+        <>
+          10 products
+          <br />
+          in about a minute
+        </>
+      ),
+      style: { top: "52%" },
+      className: `${SIDE} rounded-2xl`,
+    },
   },
   {
-    file: "steps-05-step-4",
-    alt: "Step 4, add the rest at once: the products list showing drafts made from photos, each waiting for a price.",
-  },
-  {
-    file: "steps-06-step-5",
-    alt: "Step 5, connect your bank: the payouts screen showing Payouts active with a masked account number. Weblanda takes 0% of your sales.",
-  },
-  {
-    file: "steps-07-cta",
-    alt: "Your store is live. Share your link: two real Weblanda stores on a laptop and two phones. Start free on weblanda.com.",
+    title: "Connect your bank",
+    body: "Customers pay online. The money goes straight to your account.",
+    shot: screen("step-payouts", "The payouts screen showing Payouts active with a masked account number"),
+    ring: [23, 197, 345, 244],
+    // Covers the page's "How your money moves" paragraph, as the original slide does: its
+    // copy has an em dash (screen y 578 of 844, 68.5%), which this site never shows.
+    chip: {
+      icon: BadgePercent,
+      text: (
+        <>
+          Weblanda takes
+          <br />
+          <span className="text-accent-ink">0%</span> of your sales
+        </>
+      ),
+      style: { top: "66%" },
+      className:
+        "left-1/2 w-[150%] -translate-x-1/2 rounded-2xl px-4 py-3 font-display text-sm font-bold leading-tight whitespace-normal @[20rem]:w-[120%] @[20rem]:text-base [&>span:first-child]:size-8 @[20rem]:[&>span:first-child]:size-9",
+    },
   },
 ];
+
+const SLIDE_COUNT = STEPS.length + 2;
 
 /**
  * Smallest the strip may be shrunk to keep sliding; below this it hands over
  * to the arrows. High on purpose: the smallest text is the phone screen inside
- * each slide, and under about 0.8 it turns to mush.
+ * each card, and under about 0.8 it turns to mush.
  */
 const MIN_SCALE = 0.8;
 
 /** Space under the pinned strip for the counter, plus air. */
 const COUNTER_SPACE = 56;
 
-type Slide = (typeof SLIDES)[number];
-
-function Shot({ s, base }: { s: Slide; base: string }) {
-  const srcSet = (ext: string) =>
-    WIDTHS.map((w) => `${base}/${s.file}-${w}.${ext}?v=${VERSION} ${w}w`).join(", ");
+/** A card's frame: the site's surface card with the dotted grid behind the devices. */
+function Card({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <picture>
-      <source type="image/avif" srcSet={srcSet("avif")} sizes={SIZES} />
-      <source type="image/webp" srcSet={srcSet("webp")} sizes={SIZES} />
-      <img
-        src={`${base}/${s.file}-560.webp?v=${VERSION}`}
-        alt={s.alt}
-        width={1080}
-        height={1350}
-        loading="lazy"
-        decoding="async"
-        className="block h-auto w-full"
+    <div
+      className={cn(
+        "@container relative isolate flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface p-5 sm:p-6",
+        className,
+      )}
+    >
+      <div
+        aria-hidden
+        className="bg-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_50%_85%,black_15%,transparent_70%)]"
       />
-    </picture>
+      {children}
+    </div>
+  );
+}
+
+/** Same pill as the floating chips on the hero portrait, with the icon in a lime dot. */
+function Chip({
+  icon: Icon,
+  children,
+  className,
+  style,
+}: {
+  icon: LucideIcon;
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <p
+      style={style}
+      className={cn(
+        "flex items-center gap-2 rounded-pill border border-border bg-surface/90 py-1.5 pr-3 pl-1.5 text-[0.75rem] leading-tight font-medium whitespace-nowrap text-fg shadow-[0_12px_30px_-12px_rgb(var(--shadow-color)/0.5)] backdrop-blur-md",
+        className,
+      )}
+    >
+      <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-accent-contrast">
+        <Icon aria-hidden className="size-3.5" strokeWidth={2.5} />
+      </span>
+      <span>{children}</span>
+    </p>
+  );
+}
+
+function Brand() {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="relative size-6 overflow-hidden rounded-md border border-border">
+        <Image src="/logos/weblanda-mark.jpg" alt="" fill sizes="24px" className="object-cover" />
+      </span>
+      <p className="font-mono text-[0.68rem] tracking-[0.18em] text-muted uppercase">Weblanda</p>
+    </div>
+  );
+}
+
+function CoverCard() {
+  return (
+    <Card>
+      <Brand />
+      <h4 className="mt-5 font-display text-[1.75rem] leading-[1.05] font-bold tracking-tight text-fg">
+        Your online store <span className="text-ghost">in 5 simple steps.</span>
+      </h4>
+      <p className="mt-2 text-sm text-muted">No coding. No developer. Just your phone.</p>
+
+      <div className="relative mt-auto h-[58%]">
+        <PhoneFrame
+          shot={screen("vyro-product", "A Vyro product page on a phone: olive green outdoor shoes")}
+          sizes={PHONE_SIZES}
+          className="absolute top-[14%] left-[8%] w-[40%] -rotate-6"
+        />
+        <PhoneFrame
+          shot={screen("vyro-home", "The Vyro shoe store's home page on a phone, built on Weblanda")}
+          sizes={PHONE_SIZES}
+          className="absolute top-[4%] right-[6%] w-[45%] rotate-3"
+        />
+        <Chip icon={Clock} className="absolute top-0 left-0 z-10 rounded-2xl">
+          Takes under
+          <br />5 minutes
+        </Chip>
+      </div>
+    </Card>
+  );
+}
+
+function StepCard({ step, n }: { step: Step; n: number }) {
+  const [x, y, w, h] = step.ring;
+  return (
+    <Card>
+      <div className="flex items-center justify-between gap-3">
+        <p className="font-mono text-[0.68rem] tracking-[0.18em] text-muted uppercase">
+          Step {n} of {STEPS.length}
+        </p>
+        <span aria-hidden className="flex gap-1">
+          {STEPS.map((_, i) => (
+            <i
+              key={i}
+              className={cn(
+                "block h-1 w-4 rounded-full",
+                i + 1 === n ? "bg-accent" : i + 1 < n ? "bg-accent/40" : "bg-border-strong",
+              )}
+            />
+          ))}
+        </span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-[auto_1fr] gap-x-3">
+        <span
+          aria-hidden
+          className="row-span-2 font-display text-[3.75rem] leading-[0.8] font-extrabold tracking-tight text-accent-ink"
+        >
+          {n}
+        </span>
+        <h4 className="font-display text-[1.45rem] leading-[1.05] font-bold tracking-tight text-fg">
+          <span className="sr-only">Step {n}: </span>
+          {step.title}
+        </h4>
+        <p className="mt-1.5 text-[0.8rem] leading-snug text-muted">{step.body}</p>
+      </div>
+
+      {/* Runs off the bottom of the card, so the screen fills the space under the text. */}
+      <div className="relative mx-auto mt-5 w-[54%]">
+        <PhoneFrame shot={step.shot} sizes={PHONE_SIZES}>
+          <span
+            aria-hidden
+            className="absolute rounded-lg border-2 border-accent-ink shadow-[0_0_0_4px_var(--accent-glow)]"
+            style={{
+              left: `${(x / 390) * 100}%`,
+              top: `${(y / 844) * 100}%`,
+              width: `${(w / 390) * 100}%`,
+              height: `${(h / 844) * 100}%`,
+            }}
+          />
+        </PhoneFrame>
+        <Chip
+          icon={step.chip.icon}
+          style={step.chip.style}
+          className={cn("absolute z-10 -translate-y-1/2", step.chip.className)}
+        >
+          {step.chip.text}
+        </Chip>
+      </div>
+    </Card>
+  );
+}
+
+function LiveCard({ ctaHref }: { ctaHref: string }) {
+  return (
+    <Card>
+      <Brand />
+      <h4 className="mt-5 font-display text-[1.75rem] leading-[1.05] font-bold tracking-tight text-fg">
+        Your store is live. <span className="text-ghost">Share your link.</span>
+      </h4>
+
+      <div className="relative mt-6 px-[14%]">
+        <BrowserFrame
+          shot={{
+            dir: DIR,
+            name: "vyro-desktop-grid",
+            widths: [400, 560, 800],
+            width: 1878,
+            height: 871,
+            alt: "The Vyro shoe store on a laptop, showing its product grid",
+            device: "desktop",
+          }}
+          url="vyro.weblanda.shop"
+          sizes="(min-width: 472px) 260px, 60vw"
+          className="rounded-lg [&>div]:h-5"
+        />
+        <PhoneFrame
+          shot={screen(
+            "veek3footies-home",
+            "The Veek3Footies store's home page on a phone, built on Weblanda",
+          )}
+          sizes="(min-width: 472px) 90px, 22vw"
+          className="absolute top-[18%] left-0 w-[24%] -rotate-6 rounded-[1.1rem] p-1 [&>div]:rounded-[0.8rem]"
+        />
+        <PhoneFrame
+          shot={screen("vyro-product", "A Vyro product page on a phone")}
+          sizes="(min-width: 472px) 90px, 22vw"
+          className="absolute top-[18%] right-0 w-[24%] rotate-6 rounded-[1.1rem] p-1 [&>div]:rounded-[0.8rem]"
+        />
+      </div>
+
+      <div className="mt-auto">
+        {/* Only where the card is full size: on a phone-width card they'd push the button out. */}
+        <ul className="hidden flex-wrap justify-center gap-1.5 @[20rem]:flex">
+          {(
+            [
+              [MessageCircle, "WhatsApp Status"],
+              [Camera, "Instagram bio"],
+              [Globe, "Anywhere"],
+            ] as const
+          ).map(([icon, label]) => (
+            <li key={label}>
+              <Chip icon={icon} className="pr-2.5 text-[0.7rem] shadow-none [&>span:first-child]:size-5">
+                {label}
+              </Chip>
+            </li>
+          ))}
+        </ul>
+        <ButtonAnchor href={ctaHref} external className="mt-4 w-full">
+          Start free at weblanda.com
+          <ArrowUpRight aria-hidden className="size-4" />
+        </ButtonAnchor>
+        <p className="mt-2 text-center text-xs text-muted">Free for 14 days. No card needed.</p>
+      </div>
+    </Card>
   );
 }
 
 export function SetupSteps({
-  imageBase = "/weblanda-steps",
   ctaHref = "https://weblanda.com",
   navHeight = 56,
 }: {
-  /** Public folder holding the 56 slide files, no trailing slash. */
-  imageBase?: string;
-  /** Where the closing slide's drawn-in "Start free" goes. */
+  /** Where the closing card's "Start free" button goes. */
   ctaHref?: string;
   /**
    * Height of the site's sticky/fixed header in px. The pinned strip is pushed
-   * down by this much so the header never covers the tops of the slides.
+   * down by this much so the header never covers the tops of the cards.
    */
   navHeight?: number;
 }) {
@@ -127,7 +398,7 @@ export function SetupSteps({
   const scaleRef = useRef(1);
   /**
    * Written straight into the DOM rather than held in state: it changes on
-   * every frame of a scroll, and setState there would re-render seven images
+   * every frame of a scroll, and setState there would re-render seven cards
    * sixty times a second to change two characters.
    */
   const counter = useRef<HTMLSpanElement>(null);
@@ -181,14 +452,14 @@ export function SetupSteps({
         const progress = Math.min(Math.max(-el.getBoundingClientRect().top / run, 0), 1);
         t.style.transform = `translate3d(${-progress * travelRef.current}px, 0, 0) scale(${scaleRef.current})`;
         if (counter.current) {
-          counter.current.textContent = `${Math.round(progress * (SLIDES.length - 1)) + 1} / ${SLIDES.length}`;
+          counter.current.textContent = `${Math.round(progress * (SLIDE_COUNT - 1)) + 1} / ${SLIDE_COUNT}`;
         }
       });
     }
 
     decide();
-    // Card height comes from the images' width/height attributes, so it is
-    // right before they load; the fonts are for the counter.
+    // Card height comes from the cards' aspect ratio, so it is right before the
+    // screens load; the fonts are for the text inside the cards.
     let cancelled = false;
     document.fonts?.ready.then(() => {
       if (!cancelled) decide();
@@ -229,11 +500,11 @@ export function SetupSteps({
     else window.dispatchEvent(new Event("scroll"));
   }, [active, travel, scale]);
 
-  /** One card's on-screen width. */
+  /** One card's on-screen width, plus the gap after it. */
   function stepPx() {
-    const first = track.current?.children[0] as HTMLElement | undefined;
-    if (!first) return 0;
-    return first.offsetWidth * (activeRef.current ? scaleRef.current : 1);
+    const [a, b] = Array.from(track.current?.children ?? []) as HTMLElement[];
+    if (!a || !b) return 0;
+    return (b.offsetLeft - a.offsetLeft) * (activeRef.current ? scaleRef.current : 1);
   }
 
   /**
@@ -256,8 +527,8 @@ export function SetupSteps({
     const v = viewport.current;
     const step = stepPx();
     if (!v || activeRef.current || !step || !counter.current) return;
-    const i = Math.min(SLIDES.length - 1, Math.round(v.scrollLeft / step));
-    counter.current.textContent = `${i + 1} / ${SLIDES.length}`;
+    const i = Math.min(SLIDE_COUNT - 1, Math.round(v.scrollLeft / step));
+    counter.current.textContent = `${i + 1} / ${SLIDE_COUNT}`;
   }
 
   return (
@@ -314,33 +585,27 @@ export function SetupSteps({
           >
             {/* `origin-left`, so a shrunk strip keeps its left edge in line
                 with the heading above it. */}
-            <ul ref={track} className={`flex ${active ? "origin-left will-change-transform" : ""}`}>
-              {SLIDES.map((s, i) => (
+            <ul ref={track} className={`flex gap-4 ${active ? "origin-left will-change-transform" : ""}`}>
+              <li className="aspect-[4/5] w-[calc(100vw_-_4.5rem)] max-w-[400px] shrink-0 snap-start">
+                <CoverCard />
+              </li>
+              {STEPS.map((step, i) => (
                 <li
-                  key={s.file}
-                  className="w-[calc(100vw_-_4.5rem)] max-w-[400px] shrink-0 snap-start overflow-hidden first:rounded-l-[1.75rem] last:rounded-r-[1.75rem]"
+                  key={i}
+                  className="aspect-[4/5] w-[calc(100vw_-_4.5rem)] max-w-[400px] shrink-0 snap-start"
                 >
-                  {i === SLIDES.length - 1 ? (
-                    <a
-                      href={ctaHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      // Inset ring: the card clips anything drawn outside it.
-                      className="block w-full transition-[filter] hover:brightness-[1.03] focus-visible:-outline-offset-4"
-                    >
-                      <Shot s={s} base={imageBase} />
-                    </a>
-                  ) : (
-                    <Shot s={s} base={imageBase} />
-                  )}
+                  <StepCard step={step} n={i + 1} />
                 </li>
               ))}
+              <li className="aspect-[4/5] w-[calc(100vw_-_4.5rem)] max-w-[400px] shrink-0 snap-start">
+                <LiveCard ctaHref={ctaHref} />
+              </li>
             </ul>
           </div>
         </div>
 
         <p className="mt-4 hidden text-center font-mono text-xs text-muted md:block">
-          <span ref={counter}>1 / {SLIDES.length}</span>
+          <span ref={counter}>1 / {SLIDE_COUNT}</span>
         </p>
       </div>
     </div>

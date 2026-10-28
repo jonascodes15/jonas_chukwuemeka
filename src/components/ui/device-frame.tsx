@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Screenshot } from "@/content/types";
 import { cn } from "@/lib/utils";
 import { Picture } from "./picture";
@@ -52,10 +53,13 @@ export function PhoneFrame({
   shot,
   sizes,
   className,
+  children,
 }: {
   shot: Screenshot;
   sizes: string;
   className?: string;
+  /** Drawn over the screen, e.g. highlight rings placed in % of the screen. */
+  children?: ReactNode;
 }) {
   return (
     <div
@@ -75,6 +79,7 @@ export function PhoneFrame({
           className="absolute inset-0"
           imgClassName="h-full object-cover object-top"
         />
+        {children}
       </div>
     </div>
   );
