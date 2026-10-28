@@ -6,7 +6,7 @@ import type { Store } from "@/content/types";
 /** Seller stores running on Weblanda, each linking to its live storefront. */
 export function StoreCards({ stores }: { stores: Store[] }) {
   return (
-    <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {stores.map((store) => {
         const body = (
           <>

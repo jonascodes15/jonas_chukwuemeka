@@ -213,6 +213,19 @@ export const projects: Project[] = [
 
 export const stores: Store[] = [
   {
+    name: "Vyro",
+    // From the store's own categories: Men's Boots, Men's Shoes, Men's Sneakers, Women's Sneakers.
+    description: "Shoes, boots and sneakers for men, and sneakers for women.",
+    href: "https://vyro.weblanda.shop",
+    logo: {
+      src: "/logos/stores/vyro",
+      width: 800,
+      height: 431,
+      widths: [400, 560],
+      background: "#fbfbfb",
+    },
+  },
+  {
     name: "Veek3Footies",
     description: "Premium handmade sandals, slides and mules.",
     href: "https://veek3footies.weblanda.shop",
