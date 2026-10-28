@@ -79,8 +79,6 @@ function HeroBackground() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
       <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_20%,black,transparent)]" />
-      <div className="absolute -top-48 left-[8%] size-[38rem] animate-drift rounded-full bg-accent-glow blur-3xl" />
-      <div className="absolute right-[-10%] bottom-[-20%] size-[30rem] animate-drift rounded-full bg-accent-glow opacity-60 blur-3xl [animation-delay:-9s]" />
     </div>
   );
 }
