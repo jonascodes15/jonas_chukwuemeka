@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PostArticle } from "@/components/blog/post-article";
+import { RevealObserver } from "@/components/motion/reveal-observer";
 import { emptyDoc, isDoc } from "@/lib/blog";
 import { getPost } from "@/server/admin-data";
 import { requireAdmin } from "@/server/auth";
@@ -52,6 +53,8 @@ async function Preview({ id }: { id: string }) {
           </Link>
         </div>
       </div>
+      {/* The post's scroll reveals need the observer the public site layout provides. */}
+      <RevealObserver />
       <main className="pb-24">
         <PostArticle
           url={`${site.url}/blog/${post.slug}`}

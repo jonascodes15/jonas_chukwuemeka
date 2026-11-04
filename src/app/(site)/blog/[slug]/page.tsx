@@ -80,10 +80,10 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
         {(newer || older) && (
           <nav aria-label="More posts" className="container-page mt-20">
-            <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2">
+            <Reveal className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2">
               {older ? <Adjacent post={older} direction="older" /> : <span className="max-sm:hidden" />}
               {newer && <Adjacent post={newer} direction="newer" />}
-            </div>
+            </Reveal>
           </nav>
         )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import type { PostSummary } from "@/server/blog";
 import { PostCard } from "./post-card";
@@ -42,8 +42,10 @@ export function PostGrid({ posts, tags }: { posts: PostSummary[]; tags: { tag: s
       )}
 
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {shown.map((p) => (
-          <li key={p.id}>
+        {shown.map((p, i) => (
+          // Reveals on scroll (RevealObserver also catches cards that appear after a filter change),
+          // staggered across each row of three.
+          <li key={p.id} data-reveal="" style={{ "--reveal-delay": `${(i % 3) * 0.08}s` } as CSSProperties}>
             <PostCard post={p} headingLevel="h3" />
           </li>
         ))}

@@ -57,12 +57,43 @@ export const site = {
     secondaryCta: { label: "Get in touch", target: "contact" },
   },
 
+  // The story follows Jay's LinkedIn About (Nov 2026), reworded for the site.
   about: {
+    eyebrow: "Who I am",
+    lead: "About",
+    trail: "Me",
+    intro:
+      "Biologist by training, builder by choice. Here's the longer version, and a few things I do away from the keyboard.",
     paragraphs: [
-      "I'm Jonas, a full-stack developer and the founder of Weblanda. I build web apps and online stores for businesses, and I take them the whole way: from the first product decision to the database, the checkout, and the payment that lands in the owner's account.",
-      "Weblanda is my biggest build, a platform that gives small businesses their own online store with real checkout, delivery, and a dashboard they can run from their phone. I also built Formtified, an AI tool that turns a short brief into a ready-to-share client onboarding form, and I take on custom web apps for businesses that need something made from scratch.",
-      "My background is in biology. I hold a BTech from FUTO Owerri and I'm a co-author on a peer-reviewed research publication. That training is where my engineering habits come from: I work with clean data, test carefully, and understand how something actually works before I call it done.",
-      "Right now I'm deepening my work in data engineering, with a strong interest in biological and health data. I use AI tools to move fast, but I make sure I understand every part of what I ship.",
+      "I'm Jonas Chukwuemeka, though most people call me Jay. I studied Biology at the Federal University of Technology, Owerri (FUTO), and the part of that training that stayed with me is the part I still enjoy most: taking a problem apart until I understand it, then building something that solves it.",
+      "Today I'm a full-stack developer and the founder of Weblanda, a platform that gives small businesses their own online store with real checkout, delivery and a seller dashboard they can run from their phone. I built it end to end on Next.js, Supabase and Vercel, and set up payments with Paystack subaccounts, so every sale goes straight to the seller and Weblanda takes no cut. I also built Formtified, an AI tool that turns a short brief into a ready-to-share client onboarding form.",
+      "Alongside the web work, I build data pipelines that move data end to end: streaming with Kafka, orchestration with Airflow, and storage in PostgreSQL and TimescaleDB, packaged with Docker. Two of those projects, BioStreamer and AgroPulse, grew out of my biology background and a peer-reviewed study I co-authored. That research is where I learned to handle data carefully and test it before I trust it.",
+      "I build things that go live, and I make sure I understand every part of what I ship. I'm open to new projects, and to roles in web and data engineering.",
+    ],
+    facts: [
+      { label: "Goes by", value: "Jay" },
+      { label: "Based in", value: "Lagos, Nigeria" },
+      { label: "Studied", value: "Biology at FUTO" },
+      { label: "Building", value: "Weblanda" },
+    ],
+    interestsTitle: "Away from the keyboard",
+    // TODO: written from Jay's notes (problem solving, nature, Scrabble); Jay to reword freely.
+    interests: [
+      {
+        key: "problems",
+        title: "Solving problems",
+        body: "Give me a problem without an obvious answer yet. Working it out is the part of building I enjoy most.",
+      },
+      {
+        key: "nature",
+        title: "Exploring nature",
+        body: "The biologist in me never switched off. Getting outdoors and exploring is how I reset.",
+      },
+      {
+        key: "scrabble",
+        title: "Playing Scrabble",
+        body: "Finding the best word in a rack of seven tiles is the kind of puzzle I never get tired of.",
+      },
     ],
   },
 

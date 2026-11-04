@@ -1,8 +1,10 @@
 import { ArrowLeft, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { ReadingProgress } from "@/components/case-study/reading-progress";
 import { Enter } from "@/components/motion/enter";
+import { Reveal } from "@/components/motion/reveal";
 import { site } from "@/content/site";
 import { formatPostDate, headings, type DocNode } from "@/lib/blog";
 import { PostCover } from "./post-card";
@@ -29,6 +31,9 @@ export type ArticlePost = {
 export function PostArticle({ post, url }: { post: ArticlePost; url: string }) {
   const toc = headings(post.content);
   const showToc = toc.length >= 2;
+  // Without a cover the body starts high on the page, so its opening animates in on load (CSS,
+  // no waiting for JavaScript); everything further down reveals as it scrolls into view.
+  const bodyOnLoad = !post.coverImage;
   // Only mention an update when it's a different day from publishing.
   const updated =
     formatPostDate(post.updatedAt) !== formatPostDate(post.publishedAt) &&
@@ -136,7 +141,7 @@ export function PostArticle({ post, url }: { post: ArticlePost; url: string }) {
         <div className="xl:grid xl:grid-cols-[13rem_minmax(0,42rem)_13rem] xl:justify-center xl:gap-12">
           <aside className="hidden xl:block">
             {showToc && (
-              <div className="sticky top-28 max-h-[calc(100dvh-9rem)] overflow-y-auto pb-4">
+              <div className="animate-enter sticky top-28 max-h-[calc(100dvh-9rem)] overflow-y-auto pb-4 [--enter-delay:0.3s]">
                 <TableOfContents items={toc} />
               </div>
             )}
@@ -144,7 +149,12 @@ export function PostArticle({ post, url }: { post: ArticlePost; url: string }) {
 
           <div className="mx-auto max-w-2xl min-w-0 xl:max-w-none">
             {showToc && (
-              <details className="group mb-10 rounded-2xl border border-border bg-surface xl:hidden">
+              <details
+                {...(bodyOnLoad
+                  ? { style: { "--enter-delay": "0.24s" } as CSSProperties }
+                  : { "data-reveal": "" })}
+                className={`group mb-10 rounded-2xl border border-border bg-surface xl:hidden ${bodyOnLoad ? "animate-enter" : ""}`}
+              >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-mono text-xs tracking-[0.18em] text-muted uppercase [&::-webkit-details-marker]:hidden">
                   On this page
                   <ChevronDown aria-hidden className="size-4 transition-transform group-open:rotate-180" />
@@ -161,18 +171,20 @@ export function PostArticle({ post, url }: { post: ArticlePost; url: string }) {
               </details>
             )}
 
-            <PostBody doc={post.content} />
+            <PostBody doc={post.content} enterCount={bodyOnLoad ? 2 : 0} />
 
-            <div className="mt-16 flex flex-col gap-6 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <Reveal className="mt-16 flex flex-col gap-6 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-mono text-xs tracking-[0.18em] text-muted uppercase">Share this post</p>
               <ShareButtons url={url} title={post.title} />
-            </div>
+            </Reveal>
 
-            <AuthorCard />
+            <Reveal>
+              <AuthorCard />
+            </Reveal>
           </div>
 
           <aside className="hidden xl:block">
-            <div className="sticky top-28 flex flex-col items-start gap-4">
+            <div className="animate-enter sticky top-28 flex flex-col items-start gap-4 [--enter-delay:0.3s]">
               <p className="font-mono text-[0.68rem] tracking-[0.18em] text-muted uppercase">Share</p>
               <ShareButtons url={url} title={post.title} vertical />
             </div>

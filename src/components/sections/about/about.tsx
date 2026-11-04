@@ -1,34 +1,80 @@
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight, BookOpen, GraduationCap, MapPin, Puzzle, Rocket, Trees, User } from "lucide-react";
 import Image from "next/image";
-import { Reveal } from "@/components/motion/reveal";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { degree, publication, training } from "@/content/education";
 import { site } from "@/content/site";
 import { AboutPhoto } from "./about-photo";
 
+const FACT_ICONS = { "Goes by": User, "Based in": MapPin, Studied: GraduationCap, Building: Rocket };
+
 export function About() {
+  const { about } = site;
+
   return (
     <section id="about" aria-labelledby="about-title" className="border-t border-border py-24 md:py-32">
       <div className="container-page">
-        <h2
-          id="about-title"
-          className="flex items-center gap-2 font-mono text-xs tracking-[0.18em] text-muted uppercase"
-        >
-          <span aria-hidden className="inline-block size-1.5 rounded-full bg-accent" />
-          About
-        </h2>
+        <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+          <SectionHeading id="about-title" eyebrow={about.eyebrow} lead={about.lead} trail={about.trail} />
+          <Reveal className="max-w-sm lg:pb-3">
+            <p className="text-muted">{about.intro}</p>
+          </Reveal>
+        </div>
 
-        <div className="mt-8 grid gap-12 md:mt-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+        <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
           <Reveal className="mx-auto w-full max-w-sm lg:sticky lg:top-28 lg:max-w-none lg:self-start">
             <AboutPhoto alt={`${site.name}, full-length portrait`} />
           </Reveal>
 
           <div>
             <div className="space-y-5">
-              {site.about.paragraphs.map((p) => (
+              {about.paragraphs.map((p) => (
                 <Reveal key={p}>
                   <p className="text-lg leading-relaxed text-muted">{p}</p>
                 </Reveal>
               ))}
+            </div>
+
+            <RevealGroup as="ul" className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {about.facts.map((f) => {
+                const Icon = FACT_ICONS[f.label as keyof typeof FACT_ICONS] ?? User;
+                return (
+                  <RevealItem
+                    as="li"
+                    key={f.label}
+                    className="rounded-2xl border border-border bg-surface px-4 py-4"
+                  >
+                    <Icon aria-hidden className="size-4 text-accent-ink" />
+                    <p className="mt-3 font-mono text-[0.68rem] tracking-[0.16em] text-muted uppercase">
+                      {f.label}
+                    </p>
+                    <p className="mt-1 font-display text-base font-bold tracking-tight text-fg">{f.value}</p>
+                  </RevealItem>
+                );
+              })}
+            </RevealGroup>
+
+            <div className="mt-12">
+              <Reveal>
+                <h3 className="font-display text-2xl font-extrabold tracking-tight text-fg sm:text-3xl">
+                  {about.interestsTitle}
+                </h3>
+              </Reveal>
+              <RevealGroup as="ul" className="mt-6 grid gap-4 sm:grid-cols-3">
+                {about.interests.map((item) => (
+                  <RevealItem
+                    as="li"
+                    key={item.key}
+                    className="group flex flex-col rounded-card border border-border bg-surface p-6 transition-colors duration-300 hover:border-border-strong"
+                  >
+                    <InterestMark kind={item.key} />
+                    <h4 className="mt-5 font-display text-lg font-bold tracking-tight text-fg">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2 text-[0.95rem] leading-relaxed text-muted">{item.body}</p>
+                  </RevealItem>
+                ))}
+              </RevealGroup>
             </div>
 
             <div className="mt-12 grid gap-4 sm:grid-cols-2">
@@ -114,5 +160,43 @@ export function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Scrabble values for J, A and Y. */
+const TILES = [
+  { letter: "J", points: 8, tilt: "-rotate-6" },
+  { letter: "A", points: 1, tilt: "rotate-3" },
+  { letter: "Y", points: 4, tilt: "-rotate-2" },
+];
+
+/** The picture at the top of each interest card: an icon, or three Scrabble tiles spelling JAY. */
+function InterestMark({ kind }: { kind: string }) {
+  if (kind === "scrabble") {
+    return (
+      <span aria-hidden className="flex h-12 items-center gap-1.5">
+        {TILES.map((t) => (
+          <span
+            key={t.letter}
+            className={`relative grid size-10 place-items-center rounded-lg bg-accent font-display text-lg font-extrabold text-accent-contrast shadow-[inset_0_-3px_0_rgb(0_0_0/0.18)] transition-transform duration-500 ease-out-expo group-hover:rotate-0 ${t.tilt}`}
+          >
+            {t.letter}
+            <span className="absolute right-1 bottom-0.5 font-mono text-[0.55rem] leading-none font-bold">
+              {t.points}
+            </span>
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  const Icon = kind === "nature" ? Trees : Puzzle;
+  return (
+    <span
+      aria-hidden
+      className="grid size-12 place-items-center rounded-xl bg-surface-2 text-accent-ink transition-transform duration-500 ease-out-expo group-hover:-rotate-6"
+    >
+      <Icon className="size-5" />
+    </span>
   );
 }

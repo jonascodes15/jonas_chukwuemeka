@@ -24,6 +24,33 @@ import { CopyCode } from "./copy-code";
 
 type Ctx = { ids: Map<DocNode, Heading>; code: Map<DocNode, string> };
 
+/**
+ * Motion props for a top-level block. Blocks that may be on screen when the page opens use the
+ * CSS entrance (it doesn't wait for JavaScript); the rest reveal as they scroll into view. They're
+ * set on the block itself, not a wrapper, so the `.prose-post > *` spacing rules still apply.
+ */
+type Motion = { className?: string; style?: CSSProperties; "data-reveal"?: "" };
+
+function blockMotion(index: number, enterCount: number): Motion {
+  if (index < enterCount) {
+    return {
+      className: "animate-enter",
+      style: { "--enter-delay": `${0.26 + index * 0.06}s`, "--enter-y": "16px" } as CSSProperties,
+    };
+  }
+  return { "data-reveal": "", style: { "--reveal-y": "20px" } as CSSProperties };
+}
+
+/** Merges a block's own class and style into its motion props. */
+function withMotion(motion: Motion | undefined, own: { className?: string; style?: CSSProperties } = {}) {
+  if (!motion) return own;
+  return {
+    ...motion,
+    className: [own.className, motion.className].filter(Boolean).join(" ") || undefined,
+    style: { ...motion.style, ...own.style },
+  };
+}
+
 const ALIGN = new Set(["left", "center", "right", "justify"]);
 
 function alignStyle(node: DocNode): CSSProperties | undefined {
@@ -123,7 +150,7 @@ function PostLink({ attrs, children }: { attrs?: Record<string, unknown>; childr
   );
 }
 
-function PostImage({ node }: { node: DocNode }) {
+function PostImage({ node, motion }: { node: DocNode; motion?: Motion }) {
   const src = safeImageSrc(node.attrs?.src);
   if (!src) return null;
   const alt = String(node.attrs?.alt ?? "");
@@ -134,7 +161,7 @@ function PostImage({ node }: { node: DocNode }) {
     node.attrs?.layout === "wide" || node.attrs?.layout === "small" ? node.attrs.layout : "normal";
 
   return (
-    <figure data-layout={layout}>
+    <figure data-layout={layout} {...withMotion(motion)}>
       {src.startsWith("/media/") && width && height ? (
         <Image
           src={src}
@@ -153,12 +180,12 @@ function PostImage({ node }: { node: DocNode }) {
   );
 }
 
-function YouTube({ node }: { node: DocNode }) {
+function YouTube({ node, motion }: { node: DocNode; motion?: Motion }) {
   const id = youtubeId(node.attrs?.src);
   if (!id) return null;
   const start = Number(node.attrs?.start) || 0;
   return (
-    <figure data-layout="normal">
+    <figure data-layout="normal" {...withMotion(motion)}>
       <div className="video">
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${id}${start ? `?start=${start}` : ""}`}
@@ -173,8 +200,10 @@ function YouTube({ node }: { node: DocNode }) {
   );
 }
 
-function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
+/** `motion` is only passed for top-level blocks; nested nodes render as before. */
+function renderNode(node: DocNode, key: string, ctx: Ctx, motion?: Motion): ReactNode {
   const children = () => node.content?.map((c, i) => renderNode(c, `${key}-${i}`, ctx));
+  const m = (own?: { className?: string; style?: CSSProperties }) => withMotion(motion, own);
 
   switch (node.type) {
     case "text":
@@ -184,7 +213,7 @@ function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
     case "paragraph":
       if (!node.content?.length) return null;
       return (
-        <p key={key} style={alignStyle(node)}>
+        <p key={key} {...m({ style: alignStyle(node) })}>
           {children()}
         </p>
       );
@@ -193,7 +222,7 @@ function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
       const Tag = `h${level}` as "h2" | "h3" | "h4";
       const heading = ctx.ids.get(node);
       return (
-        <Tag key={key} id={heading?.id} style={alignStyle(node)}>
+        <Tag key={key} id={heading?.id} {...m({ style: alignStyle(node) })}>
           {heading ? (
             <a href={`#${heading.id}`} className="heading-anchor">
               {children()}
@@ -205,11 +234,15 @@ function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
       );
     }
     case "bulletList":
-      return <ul key={key}>{children()}</ul>;
+      return (
+        <ul key={key} {...m()}>
+          {children()}
+        </ul>
+      );
     case "orderedList": {
       const start = Number(node.attrs?.start ?? 1);
       return (
-        <ol key={key} start={start !== 1 ? start : undefined}>
+        <ol key={key} start={start !== 1 ? start : undefined} {...m()}>
           {children()}
         </ol>
       );
@@ -217,19 +250,23 @@ function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
     case "listItem":
       return <li key={key}>{children()}</li>;
     case "blockquote":
-      return <blockquote key={key}>{children()}</blockquote>;
+      return (
+        <blockquote key={key} {...m()}>
+          {children()}
+        </blockquote>
+      );
     case "horizontalRule":
-      return <hr key={key} />;
+      return <hr key={key} {...m()} />;
     case "image":
-      return <PostImage key={key} node={node} />;
+      return <PostImage key={key} node={node} motion={motion} />;
     case "youtube":
-      return <YouTube key={key} node={node} />;
+      return <YouTube key={key} node={node} motion={motion} />;
     case "codeBlock": {
       const lang = codeLanguage(node);
       const html = ctx.code.get(node);
       const code = nodeText(node);
       return (
-        <div key={key} className="code-block">
+        <div key={key} {...m({ className: "code-block" })}>
           <div className="code-block-bar">
             <span>{languageLabel(lang)}</span>
             <CopyCode code={code} />
@@ -249,7 +286,15 @@ function renderNode(node: DocNode, key: string, ctx: Ctx): ReactNode {
   }
 }
 
-export async function PostBody({ doc }: { doc: DocNode }) {
+/**
+ * `enterCount`: how many opening blocks animate in on load rather than on scroll. Pass a few when
+ * the body can start above the fold (no cover image), 0 otherwise.
+ */
+export async function PostBody({ doc, enterCount = 0 }: { doc: DocNode; enterCount?: number }) {
   const ctx: Ctx = { ids: headingMap(doc), code: await highlightAll(doc) };
-  return <div className="prose-post">{doc.content?.map((n, i) => renderNode(n, String(i), ctx))}</div>;
+  return (
+    <div className="prose-post">
+      {doc.content?.map((n, i) => renderNode(n, String(i), ctx, blockMotion(i, enterCount)))}
+    </div>
+  );
 }
