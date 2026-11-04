@@ -55,6 +55,15 @@ export const site = {
       "Web apps and online stores, built end to end, from the first product decision to the payment that lands in your account.",
     primaryCta: { label: "See my work", target: "work" },
     secondaryCta: { label: "Get in touch", target: "contact" },
+    // The data-engineering strip under the supporting line, for data hiring managers.
+    // Tools are all on the site's tech strip and used in the Data lab projects.
+    data: {
+      label: "Data engineering enthusiast",
+      line: "I also build streaming and batch data pipelines.",
+      pipeline: ["Python", "Kafka", "Airflow", "PostgreSQL"],
+      cta: "See the Data lab",
+      target: "data",
+    },
   },
 
   // The story follows Jay's LinkedIn About (Nov 2026), reworded for the site.
@@ -62,8 +71,6 @@ export const site = {
     eyebrow: "Who I am",
     lead: "About",
     trail: "Me",
-    intro:
-      "Biologist by training, builder by choice. Here's the longer version, and a few things I do away from the keyboard.",
     paragraphs: [
       "I'm Jonas Chukwuemeka, though most people call me Jay. I studied Biology at the Federal University of Technology, Owerri (FUTO), and the part of that training that stayed with me is the part I still enjoy most: taking a problem apart until I understand it, then building something that solves it.",
       "Today I'm a full-stack developer and the founder of Weblanda, a platform that gives small businesses their own online store with real checkout, delivery and a seller dashboard they can run from their phone. I built it end to end on Next.js, Supabase and Vercel, and set up payments with Paystack subaccounts, so every sale goes straight to the seller and Weblanda takes no cut. I also built Formtified, an AI tool that turns a short brief into a ready-to-share client onboarding form.",

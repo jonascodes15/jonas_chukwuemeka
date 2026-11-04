@@ -229,6 +229,26 @@
   animation: rise 0.9s var(--ease-out-expo) var(--enter-delay, 0s) both;
 }
 
+/* The dot that travels along each link of the hero's mini data pipeline. The wrapper is as wide
+   as the link, with the dot at its right edge, so -100% to 0 carries it from end to end. */
+@keyframes pipe-flow {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+.animate-pipe-flow {
+  animation: pipe-flow 1.8s linear infinite;
+}
+
 /* Scroll reveals (see components/motion/reveal.tsx). Hidden only when JavaScript can reveal them
    and the visitor hasn't asked for reduced motion; RevealObserver adds .is-revealed in view. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {

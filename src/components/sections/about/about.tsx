@@ -14,12 +14,7 @@ export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="border-t border-border py-24 md:py-32">
       <div className="container-page">
-        <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <SectionHeading id="about-title" eyebrow={about.eyebrow} lead={about.lead} trail={about.trail} />
-          <Reveal className="max-w-sm lg:pb-3">
-            <p className="text-muted">{about.intro}</p>
-          </Reveal>
-        </div>
+        <SectionHeading id="about-title" eyebrow={about.eyebrow} lead={about.lead} trail={about.trail} />
 
         <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
           <Reveal className="mx-auto w-full max-w-sm lg:sticky lg:top-28 lg:max-w-none lg:self-start">
