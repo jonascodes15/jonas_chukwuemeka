@@ -103,7 +103,7 @@ export function Nav() {
                       data-track={`nav:${link.id}`}
                       aria-current={isActive ? (link.href ? "page" : "true") : undefined}
                       className={cn(
-                        "relative z-10 block rounded-pill px-3.5 py-2 text-sm font-medium transition-colors xl:px-4",
+                        "relative z-10 block rounded-pill px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors xl:px-4",
                         isActive ? "text-fg" : "text-muted hover:text-fg",
                       )}
                     >
@@ -130,13 +130,15 @@ export function Nav() {
                 download={site.cv.fileName}
                 size="sm"
                 variant={site.calLink ? "secondary" : "primary"}
-                className="hidden lg:inline-flex"
+                // Icon only from lg to xl, where the links leave no room for the label.
+                title="Download CV"
+                className="hidden lg:inline-flex lg:max-xl:px-2.5"
               >
                 <Download
                   aria-hidden
                   className="size-4 transition-transform group-hover/btn:translate-y-0.5"
                 />
-                Download CV
+                <span className="lg:max-xl:sr-only">Download CV</span>
               </ButtonAnchor>
               {site.calLink && (
                 <ButtonAnchor

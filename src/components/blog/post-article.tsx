@@ -213,7 +213,7 @@ function AuthorCard() {
           <Link href="/#about" transitionTypes={["nav-back"]} className="text-accent-ink hover:underline">
             More about me
           </Link>
-          <Link href="/#work" transitionTypes={["nav-back"]} className="text-accent-ink hover:underline">
+          <Link href="/#projects" transitionTypes={["nav-back"]} className="text-accent-ink hover:underline">
             See my work
           </Link>
         </p>

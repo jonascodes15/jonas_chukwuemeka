@@ -6,6 +6,7 @@ import { ChipList } from "@/components/ui/chip";
 import { BrowserFrame } from "@/components/ui/device-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { dataProjects } from "@/content/dataProjects";
+import { SECTION_IDS } from "@/content/sections";
 import type { DataProject } from "@/content/types";
 import { ProjectLinks } from "../work/project-links";
 import { ArchitectureDiagram } from "./architecture-diagram";
@@ -16,7 +17,7 @@ export function DataLab() {
 
   return (
     <section
-      id="data"
+      id={SECTION_IDS.data}
       aria-labelledby="data-title"
       className="relative isolate overflow-hidden bg-lab py-24 md:py-32"
     >

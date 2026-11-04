@@ -1,6 +1,7 @@
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getProject, stores } from "@/content/projects";
+import { SECTION_IDS } from "@/content/sections";
 import type { Screenshot } from "@/content/types";
 import { ProjectFeature } from "./project-feature";
 import { SetupSteps } from "./setup-steps";
@@ -23,7 +24,7 @@ export function Work() {
   const formtified = getProject("formtified")!;
 
   return (
-    <section id="work" aria-labelledby="work-title" className="py-24 md:py-32">
+    <section id={SECTION_IDS.projects} aria-labelledby="work-title" className="py-24 md:py-32">
       <div className="container-page">
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <SectionHeading id="work-title" eyebrow="Selected work" lead="Recent" trail="Projects" />

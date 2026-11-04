@@ -7,7 +7,7 @@ import { ArchitectureDiagram } from "@/components/sections/data/architecture-dia
 import { DeviceStack } from "@/components/sections/work/device-stack";
 import { ProjectLinks } from "@/components/sections/work/project-links";
 import { BrowserFrame } from "@/components/ui/device-frame";
-import type { CaseStudyEntry } from "@/content/work";
+import { sectionAnchor, type CaseStudyEntry } from "@/content/work";
 
 /** Top of a case study: back link, title, summary, links, a cover visual and quick facts. */
 export function CaseHero({
@@ -42,12 +42,12 @@ export function CaseHero({
       <div className="container-page">
         <Enter y={10}>
           <Link
-            href={`/#${section}`}
+            href={`/#${sectionAnchor(section)}`}
             transitionTypes={["nav-back"]}
             className="group inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted uppercase transition-colors hover:text-fg"
           >
             <ArrowLeft aria-hidden className="size-4 transition-transform group-hover:-translate-x-0.5" />
-            {section === "work" ? "Back to work" : "Back to data work"}
+            {section === "work" ? "Back to projects" : "Back to data & research"}
           </Link>
         </Enter>
 

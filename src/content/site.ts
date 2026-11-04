@@ -1,3 +1,4 @@
+import { SECTION_IDS } from "./sections";
 import type { NavLink } from "./types";
 
 /**
@@ -53,7 +54,7 @@ export const site = {
     highlight: "launched products",
     supporting:
       "Web apps and online stores, built end to end, from the first product decision to the payment that lands in your account.",
-    primaryCta: { label: "See my work", target: "work" },
+    primaryCta: { label: "See my work", target: SECTION_IDS.projects },
     secondaryCta: { label: "Get in touch", target: "contact" },
     // The data-engineering strip under the supporting line, for data hiring managers.
     // Tools are all on the site's tech strip and used in the Data lab projects.
@@ -62,7 +63,7 @@ export const site = {
       line: "I also build streaming and batch data pipelines.",
       pipeline: ["Python", "Kafka", "Airflow", "PostgreSQL"],
       cta: "See the Data lab",
-      target: "data",
+      target: SECTION_IDS.data,
     },
   },
 
@@ -160,8 +161,8 @@ export const site = {
 } as const;
 
 export const navLinks: NavLink[] = [
-  { label: "Work", id: "work" },
-  { label: "Data", id: "data" },
+  { label: "Projects", id: SECTION_IDS.projects },
+  { label: "Data & Research", id: SECTION_IDS.data },
   { label: "Experience", id: "experience" },
   { label: "About", id: "about" },
   // A page of its own; the homepage's latest-posts section has the same id for the active state.

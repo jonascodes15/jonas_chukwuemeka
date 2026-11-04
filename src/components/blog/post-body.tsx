@@ -14,6 +14,7 @@ import {
   type DocNode,
   type Heading,
 } from "@/lib/blog";
+import { currentSectionHref } from "@/content/sections";
 import { CopyCode } from "./copy-code";
 
 /**
@@ -128,8 +129,10 @@ function renderMarks(text: ReactNode, marks: DocMark[] = [], key: string): React
 }
 
 function PostLink({ attrs, children }: { attrs?: Record<string, unknown>; children: ReactNode }) {
-  const href = safeHref(attrs?.href);
-  if (!href) return <>{children}</>;
+  const safe = safeHref(attrs?.href);
+  if (!safe) return <>{children}</>;
+  // Posts written before the sections were renamed may still link to "/#work" or "/#data".
+  const href = currentSectionHref(safe);
   const newTab = attrs?.target === "_blank";
   if (href.startsWith("/") && !newTab) return <Link href={href}>{children}</Link>;
 

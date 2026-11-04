@@ -26,7 +26,7 @@ export default function NotFound() {
           <ButtonLink href="/" size="lg">
             Back to home
           </ButtonLink>
-          <ButtonLink href="/#work" size="lg" variant="secondary">
+          <ButtonLink href="/#projects" size="lg" variant="secondary">
             See my work
           </ButtonLink>
         </div>

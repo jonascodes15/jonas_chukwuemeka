@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { currentSectionId } from "@/content/sections";
 import { ButtonAnchor } from "@/components/ui/button";
 import { BrowserFrame, PhoneFrame } from "@/components/ui/device-frame";
 import type { Screenshot } from "@/content/types";
@@ -403,12 +404,15 @@ export function SetupSteps({
    */
   const counter = useRef<HTMLSpanElement>(null);
   const activeRef = useRef(false);
+  /** When the strip mounted, so the first layout can put a linked section back in view. */
+  const mountedAt = useRef(0);
 
   const [active, setActive] = useState(false);
   const [travel, setTravel] = useState(0);
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
+    mountedAt.current = performance.now();
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     const reserved = navHeight + COUNTER_SPACE;
     let frame = 0;
@@ -498,6 +502,18 @@ export function SetupSteps({
     if (!track.current) return;
     if (!active) track.current.style.transform = "";
     else window.dispatchEvent(new Event("scroll"));
+
+    // Pinning makes this block `travel` px taller, which pushes every section below it down.
+    // A page opened at one of them ("/#contact", or "Back to data & research" on a case study)
+    // has already scrolled to where that section was, so put it back under the header. Only
+    // just after mounting, so a later resize never yanks someone who is reading.
+    if (!active || performance.now() - mountedAt.current > 2500) return;
+    const id = currentSectionId(decodeURIComponent(location.hash.slice(1)));
+    const target = id ? document.getElementById(id) : null;
+    const el = section.current;
+    if (target && el && el.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      target.scrollIntoView({ block: "start", behavior: "instant" });
+    }
   }, [active, travel, scale]);
 
   /** One card's on-screen width, plus the gap after it. */

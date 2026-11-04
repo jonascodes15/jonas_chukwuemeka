@@ -1,5 +1,6 @@
 import { dataProjects } from "./dataProjects";
 import { projects } from "./projects";
+import { SECTION_IDS } from "./sections";
 import type { CaseStudy, DataProject, Project } from "./types";
 
 export interface CaseStudyEntry {
@@ -14,6 +15,10 @@ export const caseStudyEntries: CaseStudyEntry[] = [
   ...projects.map((project) => ({ project, section: "work" as const })),
   ...dataProjects.map((project) => ({ project, section: "data" as const })),
 ].flatMap((e) => (e.project.caseStudy ? [{ ...e, caseStudy: e.project.caseStudy }] : []));
+
+/** The homepage section id a case study's "back" link goes to. */
+export const sectionAnchor = (section: CaseStudyEntry["section"]) =>
+  section === "work" ? SECTION_IDS.projects : SECTION_IDS.data;
 
 export function getCaseStudy(slug: string) {
   const index = caseStudyEntries.findIndex((e) => e.project.slug === slug);

@@ -287,7 +287,7 @@ function ActionLink({
     action.target === "case-study" && action.slug
       ? `/work/${action.slug}`
       : action.target === "work"
-        ? "/#work"
+        ? "/#projects"
         : action.target === "contact" || (action.target === "book" && !site.calLink)
           ? "/#contact"
           : null;
