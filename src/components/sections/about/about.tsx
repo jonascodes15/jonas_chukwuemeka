@@ -150,7 +150,25 @@ export function About() {
                           </span>
                         )}
                       </span>
-                      <span className="shrink-0 font-mono text-xs text-muted">{t.date}</span>
+                      <span className="flex shrink-0 items-center gap-3">
+                        {t.credentialUrl && (
+                          <a
+                            href={t.credentialUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-track="about:credential"
+                            className="group inline-flex items-center gap-1 font-mono text-xs text-accent-ink underline-offset-4 hover:underline"
+                          >
+                            Verify
+                            <ArrowUpRight
+                              aria-hidden
+                              className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                            />
+                            <span className="sr-only">{` the ${t.title} certificate (opens in a new tab)`}</span>
+                          </a>
+                        )}
+                        <span className="font-mono text-xs text-muted">{t.date}</span>
+                      </span>
                     </li>
                   ))}
                 </ul>
