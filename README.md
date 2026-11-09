@@ -1,6 +1,6 @@
 # Jonas Chukwuemeka: portfolio
 
-Personal site for Jonas Chukwuemeka (Jay), founder of Weblanda, full-stack developer and biologist growing into data engineering. It's written for three audiences: clients, recruiters and academic admissions.
+Personal site for Jonas Chukwuemeka, founder of Weblanda, full-stack developer and biologist growing into data engineering. It's written for three audiences: clients, recruiters and academic admissions.
 
 Live at **https://jonas-chukwuemeka.vercel.app** (deployed on Vercel). The planned domain is `jonaschukwuemeka.com`.
 
